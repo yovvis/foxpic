@@ -1,0 +1,18 @@
+// index.scss最先加载，然后是 element plus，最后是 variables.scss 作用于 scoped
+@use 'reset';
+
+/*滚动条美化*/
+.scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #e5e6eb;
+  border-radius: 5px;
+  position: fixed;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}

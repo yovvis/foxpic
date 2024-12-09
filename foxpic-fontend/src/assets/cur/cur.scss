@@ -1,0 +1,29 @@
+/* 进度条 */
+#percentageCounter {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 3px;
+  z-index: 99999;
+  background-image: linear-gradient(to right, #339933, #ff6666);
+  border-radius: 5px;
+}
+
+body {
+  cursor: url(./Default-Select.cur), auto;
+}
+button,
+a:hover {
+  cursor: url(./Link-Select.cur), pointer;
+}
+input {
+  cursor: url(./Text-Select.cur), text;
+}
+textarea,
+input:focus {
+  cursor: url(./Handwriting.cur), text;
+}
+[data-fancybox='gallery'],
+[data-fancybox='images'] {
+  cursor: url(./zoom-in.cur), zoom-in;
+}
