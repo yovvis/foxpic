@@ -1,13 +1,13 @@
 package com.ayfox.web.controller;
 
 import com.ayfox.web.constant.UserConstant;
-import com.ayfox.web.core.ResultUtils;
-import com.ayfox.web.core.annotation.AuthCheck;
-import com.ayfox.web.core.exception.BusinessException;
-import com.ayfox.web.core.exception.ThrowUtils;
-import com.ayfox.web.core.model.dto.DeleteRequest;
-import com.ayfox.web.core.model.enums.ErrorCode;
-import com.ayfox.web.core.model.vo.BaseResponse;
+import com.ayfox.web.common.ResultUtils;
+import com.ayfox.web.annotation.AuthCheck;
+import com.ayfox.web.exception.BusinessException;
+import com.ayfox.web.exception.ThrowUtils;
+import com.ayfox.web.common.DeleteRequest;
+import com.ayfox.web.exception.ErrorCode;
+import com.ayfox.web.common.BaseResponse;
 import com.ayfox.web.model.dto.user.*;
 import com.ayfox.web.model.entity.User;
 import com.ayfox.web.model.vo.LoginUserVO;

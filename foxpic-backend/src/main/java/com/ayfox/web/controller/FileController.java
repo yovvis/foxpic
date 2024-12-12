@@ -2,11 +2,10 @@ package com.ayfox.web.controller;
 
 import com.ayfox.web.config.MinioClientConfig;
 import com.ayfox.web.constant.FileConstant;
-import com.ayfox.web.core.ResultUtils;
-import com.ayfox.web.core.controller.BaseController;
-import com.ayfox.web.core.exception.BusinessException;
-import com.ayfox.web.core.model.enums.ErrorCode;
-import com.ayfox.web.core.model.vo.BaseResponse;
+import com.ayfox.web.common.ResultUtils;
+import com.ayfox.web.exception.BusinessException;
+import com.ayfox.web.exception.ErrorCode;
+import com.ayfox.web.common.BaseResponse;
 import com.ayfox.web.manager.MinioManager;
 import com.ayfox.web.model.dto.file.UploadFileRequest;
 import com.ayfox.web.model.entity.User;

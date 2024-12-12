@@ -1,8 +1,7 @@
-package com.ayfox.web.core.exception;
+package com.ayfox.web.exception;
 
-import com.ayfox.web.core.ResultUtils;
-import com.ayfox.web.core.model.enums.ErrorCode;
-import com.ayfox.web.core.model.vo.BaseResponse;
+import com.ayfox.web.common.ResultUtils;
+import com.ayfox.web.common.BaseResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;

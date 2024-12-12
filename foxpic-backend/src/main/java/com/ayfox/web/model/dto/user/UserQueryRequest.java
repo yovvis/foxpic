@@ -1,6 +1,6 @@
 package com.ayfox.web.model.dto.user;
 
-import com.ayfox.web.core.model.dto.PageRequest;
+import com.ayfox.web.common.PageRequest;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

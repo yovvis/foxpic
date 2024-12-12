@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { message } from 'ant-design-vue'
 
 const myAxios = axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL,
@@ -23,7 +24,7 @@ myAxios.interceptors.response.use(
   function (response) {
     // console.log("resp->",response)
     const { data } = response
-    console.log('res->', data)
+    // console.log('res->', data)
     // 未登录
     if (data.code === 40100) {
       // 不是获取用户信息接口，或者不是登录页面，则跳转到登录页面
@@ -31,6 +32,7 @@ myAxios.interceptors.response.use(
         !response.request.responseURL.includes('user/get/login') &&
         !window.location.pathname.includes('/user/login')
       ) {
+        message.warning('请先登录')
         window.location.href = `/user/login?redirect=${window.location.href}`
       }
     }

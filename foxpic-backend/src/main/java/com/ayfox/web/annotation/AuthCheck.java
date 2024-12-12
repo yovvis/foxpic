@@ -1,4 +1,4 @@
-package com.ayfox.web.core.annotation;
+package com.ayfox.web.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

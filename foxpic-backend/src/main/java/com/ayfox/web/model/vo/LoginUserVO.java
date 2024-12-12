@@ -29,9 +29,13 @@ public class LoginUserVO implements Serializable {
      */
     private String userProfile;
     /**
-     * 用户角色：user/admin/ban
+     * 用户角色：user/admin/vip
      */
     private String userRole;
+    /**
+     * 会员编号
+     */
+    private Long vipNumber;
     /**
      * 创建时间
      */

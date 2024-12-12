@@ -1,8 +1,8 @@
-package com.ayfox.web.core.aop;
+package com.ayfox.web.aop;
 
-import com.ayfox.web.core.annotation.AuthCheck;
-import com.ayfox.web.core.exception.BusinessException;
-import com.ayfox.web.core.model.enums.ErrorCode;
+import com.ayfox.web.annotation.AuthCheck;
+import com.ayfox.web.exception.BusinessException;
+import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.model.entity.User;
 import com.ayfox.web.model.enums.UserRoleEnum;
 import com.ayfox.web.service.UserService;

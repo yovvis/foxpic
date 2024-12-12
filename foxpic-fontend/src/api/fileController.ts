@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import request from '@/core/request.ts'
+import request from '@/request'
 
 /** delete PUT /api/file/delete */
 export async function deleteUsingPut(
@@ -91,7 +91,6 @@ export async function uploadFileUsingPost(
       ...params,
     },
     data: formData,
-    // @ts-ignore
     requestType: 'form',
     ...(options || {}),
   })

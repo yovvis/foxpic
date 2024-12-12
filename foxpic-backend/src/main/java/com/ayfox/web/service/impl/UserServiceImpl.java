@@ -1,8 +1,8 @@
 package com.ayfox.web.service.impl;
 
 import com.ayfox.web.constant.CommonConstant;
-import com.ayfox.web.core.exception.BusinessException;
-import com.ayfox.web.core.model.enums.ErrorCode;
+import com.ayfox.web.exception.BusinessException;
+import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.mapper.UserMapper;
 import com.ayfox.web.model.dto.user.UserQueryRequest;
 import com.ayfox.web.model.entity.User;
@@ -56,19 +56,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "两次输入的密码不一致");
         }
         synchronized (userAccount.intern()) {
-            // 账户不能重复
+            // 1.账户不能重复
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("userAccount", userAccount);
             long count = this.baseMapper.selectCount(queryWrapper);
             if (count > 0) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号重复");
             }
-            // 2. 加密
+            // 2.加密
             String encryptPassword = DigestUtils.md5DigestAsHex((SALT + userPassword).getBytes());
-            // 3. 插入数据
+            // 3.插入数据
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            user.setUserName("游客123");
+            user.setUserRole(UserRoleEnum.USER.getValue());
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");

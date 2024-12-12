@@ -1,8 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import UserManage from '@/views/console/usermanage/Index.vue'
-import UserRegister from '@/views/uc/register/Index.vue'
-import UserLogin from '@/views/uc/login/Index.vue'
+import UserManage from '@/views/console/usermanage/user-login.vue'
+import UserRegister from '@/views/register/user-register.vue'
+import UserLogin from '@/views/login/user-login.vue'
 // 路由菜单
 const routes: Array<RouteRecordRaw> = [
   {

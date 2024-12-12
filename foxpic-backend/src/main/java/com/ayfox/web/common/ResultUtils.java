@@ -1,7 +1,6 @@
-package com.ayfox.web.core;
+package com.ayfox.web.common;
 
-import com.ayfox.web.core.model.enums.ErrorCode;
-import com.ayfox.web.core.model.vo.BaseResponse;
+import com.ayfox.web.exception.ErrorCode;
 
 /**
  * 返回工具类

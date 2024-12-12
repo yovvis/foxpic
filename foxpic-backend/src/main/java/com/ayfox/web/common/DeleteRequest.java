@@ -1,4 +1,4 @@
-package com.ayfox.web.core.model.dto;
+package com.ayfox.web.common;
 
 import lombok.Data;
 

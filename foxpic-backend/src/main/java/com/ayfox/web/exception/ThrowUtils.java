@@ -1,6 +1,4 @@
-package com.ayfox.web.core.exception;
-
-import com.ayfox.web.core.model.enums.ErrorCode;
+package com.ayfox.web.exception;
 
 /**
  * 抛异常工具类

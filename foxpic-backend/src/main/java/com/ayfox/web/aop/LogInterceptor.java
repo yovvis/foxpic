@@ -1,4 +1,4 @@
-package com.ayfox.web.core.aop;
+package com.ayfox.web.aop;
 
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

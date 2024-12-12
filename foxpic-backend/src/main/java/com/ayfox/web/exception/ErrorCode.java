@@ -1,4 +1,4 @@
-package com.ayfox.web.core.model.enums;
+package com.ayfox.web.exception;
 
 /**
  * 自定义错误码
