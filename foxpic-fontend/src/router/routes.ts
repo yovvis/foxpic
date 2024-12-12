@@ -1,14 +1,14 @@
 import type { RouteRecordRaw } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import UserManage from '@/views/console/usermanage/user-login.vue'
-import UserRegister from '@/views/register/user-register.vue'
-import UserLogin from '@/views/login/user-login.vue'
+import HomePage from '@/views/home-page.vue'
+import UserManage from '@/views/console/user-manage.vue'
+import UserRegister from '@/views/uc/user-register.vue'
+import UserLogin from '@/views/uc/user-login.vue'
 // 路由菜单
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: HomePage,
     meta: {
       label: '主页',
       icon: 'ant-design:home-outlined',
@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/console/usermanage/test',
         name: 'userManageTest',
-        component: HomeView,
+        component: HomePage,
         meta: {
           label: 'test',
           icon: 'ant-design:crown-outlined',
