@@ -18,5 +18,5 @@ public interface FileConstant {
     /**
      * Minio 访问地址
      */
-    String MINIO_HOST = "https://api.oss.tenyon.cn/";
+    String MINIO_HOST = "https://api.oss.tenyon.cn";
 }

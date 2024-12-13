@@ -1,12 +1,11 @@
 package com.ayfox.web;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -39,7 +38,7 @@ public class MainApplication {
         String port = env.getProperty("server.port");
         // path
         String path = env.getProperty("server.servlet.context-path");
-        if (StringUtils.isBlank(path)) {
+        if (StrUtil.isBlank(path)) {
             path = "";
         }
         logger.info("\n----------------------------------------------------------\n\t" +

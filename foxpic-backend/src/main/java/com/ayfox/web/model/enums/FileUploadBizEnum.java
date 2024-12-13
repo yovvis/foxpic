@@ -1,6 +1,6 @@
 package com.ayfox.web.model.enums;
 
-import org.apache.commons.lang3.StringUtils;
+import cn.hutool.core.util.StrUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +38,7 @@ public enum FileUploadBizEnum {
      * @return
      */
     public static FileUploadBizEnum getEnumByValue(String value) {
-        if (StringUtils.isEmpty(value)) {
+        if (StrUtil.isEmpty(value)) {
             return null;
         }
         for (FileUploadBizEnum anEnum : FileUploadBizEnum.values()) {

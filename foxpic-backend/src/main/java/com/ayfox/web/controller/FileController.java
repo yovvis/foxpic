@@ -1,20 +1,21 @@
 package com.ayfox.web.controller;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.json.JSONUtil;
+import com.ayfox.web.common.BaseResponse;
+import com.ayfox.web.common.ResultUtils;
 import com.ayfox.web.config.MinioClientConfig;
 import com.ayfox.web.constant.FileConstant;
-import com.ayfox.web.common.ResultUtils;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
-import com.ayfox.web.common.BaseResponse;
 import com.ayfox.web.manager.MinioManager;
 import com.ayfox.web.model.dto.file.UploadFileRequest;
 import com.ayfox.web.model.entity.User;
 import com.ayfox.web.model.enums.FileUploadBizEnum;
 import com.ayfox.web.service.UserService;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
+import io.minio.StatObjectResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,9 @@ public class FileController {
     private MinioManager minioManager;
 
     @Resource
-    private MinioClientConfig minioConfig;
+    private MinioClientConfig minioClientConfig;
+
+
 
     /**
      * 文件上传
@@ -63,7 +66,7 @@ public class FileController {
         validFile(multipartFile, fileUploadBizEnum);
         User loginUser = userService.getLoginUser(request);
         // 文件目录：根据业务、用户来划分
-        String uuid = RandomStringUtils.randomAlphanumeric(8);
+        String uuid = RandomUtil.randomString(8);
         String filename = uuid + "-" + multipartFile.getOriginalFilename();
         String filepath = String.format("/%s/%s/%s", fileUploadBizEnum.getValue(), loginUser.getId(), filename);
         File file = null;
@@ -73,7 +76,7 @@ public class FileController {
             multipartFile.transferTo(file);
             minioManager.uploadObject(filepath, file);
             // 返回可访问地址
-            return ResultUtils.success(FileConstant.MINIO_HOST + minioConfig.getBucket() + filepath);
+            return ResultUtils.success(FileConstant.MINIO_HOST + "/" + minioClientConfig.getBucket() + filepath);
         } catch (Exception e) {
             logger.error("file upload error, filepath = " + filepath, e);
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "minio:上传失败");
@@ -130,13 +133,29 @@ public class FileController {
         try {
             InputStream fileInputStream = minioManager.getObject(filename);
             // todo 完善文件命名逻辑
-            String newFileName = System.currentTimeMillis() + "." + StringUtils.substringAfterLast(filename, ".");
+            String newFileName = System.currentTimeMillis() + "." + FileUtil.getSuffix(filename);
             response.setHeader("Content-Disposition", "attachment;filename=" + newFileName);
             response.setContentType("application/force-download");
             response.setCharacterEncoding("UTF-8");
-            IOUtils.copy(fileInputStream, response.getOutputStream());
+            IoUtil.copy(fileInputStream, response.getOutputStream());
         } catch (Exception e) {
             throw new BusinessException(ErrorCode.OPERATION_ERROR, "minio:下载失败");
+        }
+    }
+
+    /**
+     * 下载minio服务的文件
+     *
+     * @param filename
+     * @param response
+     */
+    @GetMapping("/statObj")
+    public BaseResponse<String> statObj(@RequestParam String filename, HttpServletResponse response) {
+        try {
+            StatObjectResponse statObjectResponse = minioManager.statObject(filename);
+            return ResultUtils.success(statObjectResponse.toString());
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR, "minio:获取信息失败");
         }
     }
 
@@ -167,7 +186,7 @@ public class FileController {
         // 文件大小
         long fileSize = multipartFile.getSize();
         // 文件后缀
-        String fileSuffix = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+        String fileSuffix = FileUtil.getSuffix(multipartFile.getOriginalFilename());
         final long ONE_M = 1024 * 1024L;
         if (FileUploadBizEnum.USER_AVATAR.equals(fileUploadBizEnum)) {
             if (fileSize > ONE_M) {

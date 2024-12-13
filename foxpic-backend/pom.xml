@@ -28,12 +28,10 @@
         <sa-token.verion>1.39.0</sa-token.verion>
         <knife4j.version>4.4.0</knife4j.version>
 
-        <commons.lang3.version>3.4</commons.lang3.version>
-        <commons.io.version>2.5</commons.io.version>
-        <commons.coll.version>4.4</commons.coll.version>
+        <hutool.version>5.8.26</hutool.version>
         <captcha.verion>1.6.2</captcha.verion>
         <lombok.version>1.18.30</lombok.version>
-        <minio.version>8.5.10</minio.version>
+        <minio.version>8.5.14</minio.version>
 
     </properties>
     <dependencies>
@@ -114,21 +112,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons.lang3.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons.io.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-collections4</artifactId>
-            <version>${commons.coll.version}</version>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
         </dependency>
 
         <dependency>

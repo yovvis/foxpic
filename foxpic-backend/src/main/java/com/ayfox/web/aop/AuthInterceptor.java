@@ -1,12 +1,12 @@
 package com.ayfox.web.aop;
 
+import cn.hutool.core.util.StrUtil;
 import com.ayfox.web.annotation.AuthCheck;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.model.entity.User;
 import com.ayfox.web.model.enums.UserRoleEnum;
 import com.ayfox.web.service.UserService;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -43,7 +43,7 @@ public class AuthInterceptor {
         // 当前登录用户
         User loginUser = userService.getLoginUser(request);
         // 必须有该权限才通过
-        if (StringUtils.isNotBlank(mustRole)) {
+        if (StrUtil.isNotBlank(mustRole)) {
             UserRoleEnum mustUserRoleEnum = UserRoleEnum.getEnumByValue(mustRole);
             if (mustUserRoleEnum == null) {
                 throw new BusinessException(ErrorCode.NO_AUTH_ERROR);

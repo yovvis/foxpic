@@ -4,8 +4,6 @@ import com.ayfox.web.config.MinioClientConfig;
 import io.minio.*;
 import io.minio.http.Method;
 import io.minio.messages.Item;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -23,7 +21,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class MinioManager {
-    Logger logger = LoggerFactory.getLogger(MinioManager.class);
 
     @Resource
     private MinioClientConfig minioClientConfig;
@@ -31,10 +28,12 @@ public class MinioManager {
     @Resource
     private MinioClient minioClient;
 
+    // region minio附件
+
     /**
      * 上传对象
      *
-     * @param key
+     * @param key  user_avatar/5/fGap1Lpj-default.png
      * @param file
      */
     public ObjectWriteResponse uploadObject(String key, File file) {
@@ -90,21 +89,24 @@ public class MinioManager {
     /**
      * 删除
      *
-     * @param objectName
+     * @param key
      */
-    public void deleteObject(String objectName) {
+    public void deleteObject(String key) {
         try {
-            RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder().bucket(minioClientConfig.getBucket()).object(objectName).build();
+            RemoveObjectArgs removeObjectArgs = RemoveObjectArgs.builder().bucket(minioClientConfig.getBucket()).object(key).build();
             minioClient.removeObject(removeObjectArgs);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    //获取minio中地址
-    public String getObjectUrl(String objectName) {
+    /**
+     * @param key user_avatar/5/fGap1Lpj-default.png
+     * @return
+     */
+    public String getObjectUrl(String key) {
         try {
-            GetPresignedObjectUrlArgs getPresignedObjectUrlArgs = GetPresignedObjectUrlArgs.builder().method(Method.GET).bucket(minioClientConfig.getBucket()).object(objectName).expiry(7, TimeUnit.DAYS).build();
+            GetPresignedObjectUrlArgs getPresignedObjectUrlArgs = GetPresignedObjectUrlArgs.builder().method(Method.GET).bucket(minioClientConfig.getBucket()).object(key).expiry(7, TimeUnit.DAYS).build();
             return minioClient.getPresignedObjectUrl(getPresignedObjectUrlArgs);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -115,15 +117,47 @@ public class MinioManager {
     /**
      * 下载minio服务的文件
      *
-     * @param objectName
+     * @param key user_avatar/5/fGap1Lpj-default.png
      * @return
      */
-    public InputStream getObject(String objectName) {
+    public InputStream getObject(String key) {
         try {
-            GetObjectArgs getObjectArgs = GetObjectArgs.builder().bucket(minioClientConfig.getBucket()).object(objectName).build();
+            GetObjectArgs getObjectArgs = GetObjectArgs.builder().bucket(minioClientConfig.getBucket()).object(key).build();
             return minioClient.getObject(getObjectArgs);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 获取附件状态
+     *
+     * @param key user_avatar/5/fGap1Lpj-default.png
+     */
+    public StatObjectResponse statObject(String key) {
+        try {
+            StatObjectArgs statObjectArgs = StatObjectArgs.builder().bucket(minioClientConfig.getBucket()).object(key).build();
+            return minioClient.statObject(statObjectArgs);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    // endregion
+
+    /**
+     * 上传对象（附带图片信息）
+     *
+     * @param key  唯一键 user_avatar/5/fGap1Lpj-default.png
+     * @param file 文件
+     */
+    public ObjectWriteResponse putPictureObject(String key, File file) {
+        ObjectWriteResponse objectWriteResponse;
+        try {
+            UploadObjectArgs args = UploadObjectArgs.builder().bucket(minioClientConfig.getBucket()).object(key).filename(file.getAbsolutePath()).build();
+            objectWriteResponse = minioClient.uploadObject(args);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return objectWriteResponse;
     }
 }

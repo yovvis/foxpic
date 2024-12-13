@@ -1,20 +1,20 @@
 package com.ayfox.web.controller;
 
-import com.ayfox.web.constant.UserConstant;
-import com.ayfox.web.common.ResultUtils;
+import cn.hutool.core.util.StrUtil;
 import com.ayfox.web.annotation.AuthCheck;
-import com.ayfox.web.exception.BusinessException;
-import com.ayfox.web.exception.ThrowUtils;
-import com.ayfox.web.common.DeleteRequest;
-import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.common.BaseResponse;
+import com.ayfox.web.common.DeleteRequest;
+import com.ayfox.web.common.ResultUtils;
+import com.ayfox.web.constant.UserConstant;
+import com.ayfox.web.exception.BusinessException;
+import com.ayfox.web.exception.ErrorCode;
+import com.ayfox.web.exception.ThrowUtils;
 import com.ayfox.web.model.dto.user.*;
 import com.ayfox.web.model.entity.User;
 import com.ayfox.web.model.vo.LoginUserVO;
 import com.ayfox.web.model.vo.UserVO;
 import com.ayfox.web.service.UserService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -54,7 +54,7 @@ public class UserController {
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
+        if (StrUtil.hasBlank(userAccount, userPassword, checkPassword)) {
             return null;
         }
         long result = userService.userRegister(userAccount, userPassword, checkPassword);
@@ -75,7 +75,7 @@ public class UserController {
         }
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
-        if (StringUtils.isAnyBlank(userAccount, userPassword)) {
+        if (StrUtil.hasBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         LoginUserVO loginUserVO = userService.userLogin(userAccount, userPassword, request);
