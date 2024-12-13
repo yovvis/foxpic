@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
     component: UserLoginView,
     meta: {
       label: '用户登录',
-      hideInMenu: true
+      hideInMenu: true,
     },
   },
   {
@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
     component: UserRegisterView,
     meta: {
       label: '用户注册',
-      hideInMenu: true
+      hideInMenu: true,
     },
   },
   {

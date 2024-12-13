@@ -228,13 +228,14 @@ public class UserController {
     }
 
     /**
-     * 分页获取用户封装列表
+     * 分页获取用户封装列表（仅管理员）
      *
      * @param userQueryRequest
      * @param request
      * @return
      */
     @PostMapping("/list/page/vo")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Page<UserVO>> listUserVOByPage(@RequestBody UserQueryRequest userQueryRequest,
                                                        HttpServletRequest request) {
         if (userQueryRequest == null) {

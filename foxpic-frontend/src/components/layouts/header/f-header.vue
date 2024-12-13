@@ -14,7 +14,10 @@
         <div class="right">
           <div v-if="userStore.loginUser.id">
             <a-dropdown placement="bottom">
-              <a-avatar :src="userStore.loginUser?.userAvatar ?? notLoginUser" size="large"></a-avatar>
+              <a-avatar
+                :src="userStore.loginUser?.userAvatar ?? notLoginUser"
+                size="large"
+              ></a-avatar>
               <template #overlay>
                 <a-menu>
                   <a-menu-item @click="doDropItemClick('profile')">

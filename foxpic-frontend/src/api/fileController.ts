@@ -6,7 +6,7 @@ import request from '@/request'
 export async function deleteUsingPut(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.deleteUsingPUTParams,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseBoolean_>('/api/file/delete', {
     method: 'PUT',
@@ -21,7 +21,7 @@ export async function deleteUsingPut(
 export async function downloadUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.downloadUsingGETParams,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<any>('/api/file/download', {
     method: 'GET',
@@ -36,7 +36,7 @@ export async function downloadUsingGet(
 export async function getHttpUrlUsingGet(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getHttpUrlUsingGETParams,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseString_>('/api/file/getHttpUrl', {
     method: 'GET',
@@ -61,7 +61,7 @@ export async function uploadFileUsingPost(
   params: API.uploadFileUsingPOSTParams,
   body: {},
   file?: File,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   const formData = new FormData()
 
