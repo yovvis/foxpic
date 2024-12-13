@@ -1,10 +1,10 @@
 <template>
   <div class="basic-header">
     <a-row :wrap="false">
-      <a-col flex="150px">
+      <a-col flex="180px">
         <div class="title-bar">
-          <img class="logo" src="../../../assets/logo.png" alt="logo" />
-          <div class="title">初始化UI</div>
+          <img class="logo" src="../../../assets/vue.svg" alt="logo" />
+          <div class="title">亿智狐云图库</div>
         </div>
       </a-col>
       <a-col flex="auto">
@@ -14,7 +14,7 @@
         <div class="right">
           <div v-if="userStore.loginUser.id">
             <a-dropdown placement="bottom">
-              <a-avatar :src="userStore.loginUser?.userAvatar ?? notLoginUser"></a-avatar>
+              <a-avatar :src="userStore.loginUser?.userAvatar ?? notLoginUser" size="large"></a-avatar>
               <template #overlay>
                 <a-menu>
                   <a-menu-item @click="doDropItemClick('profile')">
@@ -39,13 +39,23 @@
 import { useUserStore } from '@/stores/userStore.ts'
 import notLoginUser from '@/assets/notLogin.png'
 import router from '@/router'
+import { userLogoutUsingPost } from '@/api/userController.ts'
+import { message } from 'ant-design-vue'
 
 const userStore = useUserStore()
 
-const doDropItemClick = (key: string) => {
+const doDropItemClick = async (key: string) => {
   if (key === 'logout') {
-    userStore.doLogout()
-    router.push('/uc/login')
+    const res = await userLogoutUsingPost()
+    if (res.data.code === 0) {
+      userStore.setLoginUser({
+        userName: '未登录',
+      })
+      message.success('退出登录成功')
+      await router.push('/uc/login')
+    } else {
+      message.error('退出登录失败，' + res.data.message)
+    }
   }
   if (key === 'profile') {
     router.push('/uc/profile')

@@ -84,6 +84,7 @@ declare namespace API {
 
   type LoginUserVO = {
     createTime?: string
+    editTime?: string
     id?: number
     updateTime?: string
     userAvatar?: string
@@ -149,11 +150,10 @@ declare namespace API {
   type UserQueryRequest = {
     current?: number
     id?: number
-    mpOpenId?: string
     pageSize?: number
     sortField?: string
     sortOrder?: string
-    unionId?: string
+    userAccount?: string
     userName?: string
     userProfile?: string
     userRole?: string
@@ -182,6 +182,7 @@ declare namespace API {
   type UserVO = {
     createTime?: string
     id?: number
+    userAccount?: string
     userAvatar?: string
     userName?: string
     userProfile?: string
