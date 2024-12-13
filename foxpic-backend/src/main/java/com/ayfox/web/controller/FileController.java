@@ -144,7 +144,7 @@ public class FileController {
     }
 
     /**
-     * 下载minio服务的文件
+     * 获取文件信息
      *
      * @param filename
      * @param response
