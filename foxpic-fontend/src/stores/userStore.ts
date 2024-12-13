@@ -3,18 +3,8 @@ import { defineStore } from 'pinia'
 import ACCESS_ENUM from '@/hooks/access/accessEnum.ts'
 import { getLoginUserUsingGet, userLogoutUsingPost } from '@/api/userController.ts'
 
-// interface LoginUserVO {
-//   createTime?: string
-//   id?: number
-//   updateTime?: string
-//   userAvatar?: string
-//   userName?: string
-//   userProfile?: string
-//   userRole?: string
-// }
-
 export const useUserStore = defineStore('userStore', () => {
-  const loginUser = ref<API.BaseResponse>({
+  const loginUser = ref<API.LoginUserVO>({
     userName: '未登录',
   })
 

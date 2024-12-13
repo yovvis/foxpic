@@ -14,10 +14,12 @@
     <version>1.0.0</version>
     <name>foxpic-backend</name>
     <properties>
+<!--        <java.version>1.8</java.version>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
         <springboot.version>2.7.18</springboot.version>
+        <skipTests>true</skipTests>
+
         <logback.version>1.2.10</logback.version>
         <aspectjweaver.version>1.9.3</aspectjweaver.version>
 
@@ -26,7 +28,10 @@
         <sa-token.verion>1.39.0</sa-token.verion>
         <knife4j.version>4.4.0</knife4j.version>
 
-        <hutool.version>5.8.26</hutool.version>
+        <commons.lang3.version>3.4</commons.lang3.version>
+        <commons.codec.version>1.9</commons.codec.version>
+        <commons.io.version>2.5</commons.io.version>
+        <commons.coll.version>4.4</commons.coll.version>
         <captcha.verion>1.6.2</captcha.verion>
         <lombok.version>1.18.30</lombok.version>
         <minio.version>8.5.10</minio.version>
@@ -109,11 +114,28 @@
             <version>${mybatis-plus.version}</version>
         </dependency>
 
-        <!-- 工具库：https://doc.hutool.cn/pages/index/ -->
         <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool.version}</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons.lang3.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>${commons.codec.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons.coll.version}</version>
         </dependency>
 
         <dependency>
