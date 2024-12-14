@@ -14,7 +14,7 @@ spring:
     name: foxpic-backend
   # 默认 dev 环境
   profiles:
-    active: dev
+    active: local
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -26,9 +26,9 @@ spring:
     timeout: 2592000
   # 数据库配置
   datasource:
-    url: jdbc:mysql://localhost:3306/foxpic?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&autoReconnect=false&useSSL=false
-    username: root
-    password: root
+    url: jdbc:mysql://${spring.datasource.host}:3306/foxpic?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&autoReconnect=false&useSSL=false
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: HikariCPDatasource
@@ -42,9 +42,9 @@ spring:
   # Redis 配置
   redis:
     database: 10
-    host: localhost
+    host: ${spring.datasource.host}
     port: 6379
-    password: 123456
+    password: ${spring.datasource.password}
     lettuce:
       pool:
         max-active: 200
@@ -69,10 +69,10 @@ mybatis-plus:
 # 附件存储
 s3:
   minio:
-    accessKey: xxx
-    secretKey: xxx
-    endpoint: xxx
-    bucket: xxx
+    accessKey: ${s3.minio.accessKey}
+    secretKey: ${s3.minio.secretKey}
+    endpoint: ${s3.minio.endpoint}
+    bucket: ${s3.minio.bucket}
 project:
   folder: D:/tmp/foxpic/
 log:
