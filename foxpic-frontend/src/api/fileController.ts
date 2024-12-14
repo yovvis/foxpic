@@ -55,6 +55,21 @@ export async function listObjsUsingGet(options?: { [key: string]: any }) {
   })
 }
 
+/** statObj GET /api/file/statObj */
+export async function statObjUsingGet(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.statObjUsingGETParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseString_>('/api/file/statObj', {
+    method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  })
+}
+
 /** uploadFile POST /api/file/upload */
 export async function uploadFileUsingPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -91,6 +106,7 @@ export async function uploadFileUsingPost(
       ...params,
     },
     data: formData,
+    // @ts-ignore
     requestType: 'form',
     ...(options || {}),
   })

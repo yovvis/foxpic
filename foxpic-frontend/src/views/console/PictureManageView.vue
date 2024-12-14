@@ -1,12 +1,25 @@
 <template>
-  <div id="userManagePage">
+  <div id="pictureManageView">
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
-      <a-form-item label="账号">
-        <a-input v-model:value="searchParams.userAccount" placeholder="输入账号" allow-clear />
+      <a-form-item label="关键词">
+        <a-input
+          v-model:value="searchParams.searchText"
+          placeholder="从名称和简介搜索"
+          allow-clear
+        />
       </a-form-item>
-      <a-form-item label="用户名">
-        <a-input v-model:value="searchParams.userName" placeholder="输入用户名" allow-clear />
+      <a-form-item label="类型">
+        <a-input v-model:value="searchParams.category" placeholder="请输入类型" allow-clear />
+      </a-form-item>
+      <a-form-item label="标签">
+        <a-select
+          v-model:value="searchParams.tags"
+          mode="tags"
+          placeholder="请输入标签"
+          style="min-width: 180px"
+          allow-clear
+        />
       </a-form-item>
       <a-form-item>
         <a-button type="primary" html-type="submit">搜索</a-button>
@@ -21,17 +34,36 @@
       @change="doTableChange"
     >
       <template #bodyCell="{ column, record }">
-        <template v-if="column.dataIndex === 'userAvatar'">
-          <a-image :src="record.userAvatar" :width="120" />
+        <template v-if="column.dataIndex === 'url'">
+          <a-image :src="record.url" :width="120" />
         </template>
-        <template v-else-if="column.dataIndex === 'userRole'">
-          <a-tag :color="roleColors[record?.userRole]">{{ roleLabels[record?.userRole] }}</a-tag>
+        <template v-if="column.dataIndex === 'tags'">
+          <a-space wrap>
+            <a-tag v-for="tag in JSON.parse(record.tags || '[]')" :key="tag">
+              {{ tag }}
+            </a-tag>
+          </a-space>
+        </template>
+        <template v-if="column.dataIndex === 'picInfo'">
+          <div>格式：{{ record.picFormat }}</div>
+          <div>宽度：{{ record.picWidth }}</div>
+          <div>高度：{{ record.picHeight }}</div>
+          <div>宽高比：{{ record.picScale }}</div>
+          <div>大小：{{ (record.picSize / 1024).toFixed(2) }}KB</div>
         </template>
         <template v-if="column.dataIndex === 'createTime'">
           {{ dayjs(record.createTime).format('YYYY-MM-DD HH:mm:ss') }}
         </template>
+        <template v-if="column.dataIndex === 'editTime'">
+          {{ dayjs(record.editTime).format('YYYY-MM-DD HH:mm:ss') }}
+        </template>
         <template v-else-if="column.key === 'action'">
-          <a-button danger @click="doDelete(record.id)">删除</a-button>
+          <a-space>
+            <a-button type="link" :href="`/add_picture?id=${record.id}`" target="_blank">
+              编辑
+            </a-button>
+            <a-button danger @click="doDelete(record.id)">删除</a-button>
+          </a-space>
         </template>
       </template>
     </a-table>
@@ -39,39 +71,53 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { deleteUserUsingPost, listUserVoByPageUsingPost } from '@/api/userController.ts'
+import { deletePictureUsingPost, listPictureByPageUsingPost } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import ACCESS_ENUM from '@/hooks/access/accessEnum.ts'
 
 const columns = [
   {
     title: 'id',
     dataIndex: 'id',
+    width: 80,
   },
   {
-    title: '账号',
-    dataIndex: 'userAccount',
+    title: '图片',
+    dataIndex: 'url',
   },
   {
-    title: '用户名',
-    dataIndex: 'userName',
-  },
-  {
-    title: '头像',
-    dataIndex: 'userAvatar',
+    title: '名称',
+    dataIndex: 'name',
   },
   {
     title: '简介',
-    dataIndex: 'userProfile',
+    dataIndex: 'introduction',
+    ellipsis: true,
   },
   {
-    title: '用户角色',
-    dataIndex: 'userRole',
+    title: '类型',
+    dataIndex: 'category',
+  },
+  {
+    title: '标签',
+    dataIndex: 'tags',
+  },
+  {
+    title: '图片信息',
+    dataIndex: 'picInfo',
+  },
+  {
+    title: '用户 id',
+    dataIndex: 'userId',
+    width: 80,
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
+  },
+  {
+    title: '编辑时间',
+    dataIndex: 'editTime',
   },
   {
     title: '操作',
@@ -79,35 +125,21 @@ const columns = [
   },
 ]
 
-const roleColors = reactive({
-  [ACCESS_ENUM.ADMIN]: 'green',
-  [ACCESS_ENUM.USER]: 'blue',
-  [ACCESS_ENUM.VIP]: 'orange',
-  [ACCESS_ENUM.SVIP]: 'red',
-})
-
-const roleLabels = reactive({
-  [ACCESS_ENUM.ADMIN]: '管理员',
-  [ACCESS_ENUM.USER]: '普通用户',
-  [ACCESS_ENUM.VIP]: '会员',
-  [ACCESS_ENUM.SVIP]: '超级会员',
-})
-
 // 定义数据
-const dataList = ref<API.UserVO[]>([])
+const dataList = ref<API.Picture[]>([])
 const total = ref(0)
 
 // 搜索条件
-const searchParams = reactive<API.UserQueryRequest>({
+const searchParams = reactive<API.PictureQueryRequest>({
   current: 1,
   pageSize: 10,
   sortField: 'createTime',
-  sortOrder: 'ascend',
+  sortOrder: 'descend',
 })
 
 // 获取数据
 const fetchData = async () => {
-  const res = await listUserVoByPageUsingPost({
+  const res = await listPictureByPageUsingPost({
     ...searchParams,
   })
   if (res.data.code === 0 && res.data.data) {
@@ -153,7 +185,7 @@ const doDelete = async (id: number | undefined) => {
   if (!id) {
     return
   }
-  const res = await deleteUserUsingPost({ id })
+  const res = await deletePictureUsingPost({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
     // 刷新数据
