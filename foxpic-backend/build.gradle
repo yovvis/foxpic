@@ -33,6 +33,7 @@ ext {
     minioVersion = '8.5.14'
     cosVersion = '5.6.227'
     hutoolVersion = '5.8.26'
+    JsoupVersion = '1.15.3'
 }
 
 dependencyManagement {
@@ -66,7 +67,9 @@ dependencies {
     // Cos
     implementation("com.qcloud:cos_api:${cosVersion}")
     // Hutool
-    implementation("cn.hutool:hutool-core:${hutoolVersion}")
+    implementation("cn.hutool:hutool-all:${hutoolVersion}")
+    // Jsoup
+    implementation("org.jsoup:jsoup:${JsoupVersion}")
     // Spring Boot Configuration
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     // Lombok

@@ -1,5 +1,5 @@
 <template>
-  <div id="userManagePage">
+  <div id="userManageView">
     <!-- 搜索表单 -->
     <a-form layout="inline" :model="searchParams" @finish="doSearch">
       <a-form-item label="账号">
@@ -163,3 +163,7 @@ const doDelete = async (id: number | undefined) => {
   }
 }
 </script>
+<style lang="scss" scoped>
+#userManageView {
+}
+</style>

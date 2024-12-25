@@ -86,6 +86,21 @@ export async function listPictureVoByPage(
   })
 }
 
+/** 此处后端没有提供注释 POST /picture/review */
+export async function doPictureReview(
+  body: API.PictureReviewRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponseBoolean>('/picture/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** 给定 mock图片分类 GET /picture/tag_category */
 export async function listPictureTagCategory(options?: { [key: string]: any }) {
   return request<API.BaseResponsePictureTagCategory>('/picture/tag_category', {
@@ -114,17 +129,66 @@ export async function uploadPicture(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.uploadPictureParams,
   body: {},
+  file?: File,
+  options?: { [key: string]: any },
+) {
+  const formData = new FormData()
+
+  if (file) {
+    formData.append('file', file)
+  }
+
+  Object.keys(body).forEach((ele) => {
+    const item = (body as any)[ele]
+
+    if (item !== undefined && item !== null) {
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach((f) => formData.append(ele, f || ''))
+        } else {
+          formData.append(ele, JSON.stringify(item))
+        }
+      } else {
+        formData.append(ele, item)
+      }
+    }
+  })
+  return request<API.BaseResponsePictureVO>('/picture/upload', {
+    method: 'POST',
+    params: {
+      ...params,
+    },
+    data: formData,
+    // @ts-ignore
+    requestType: 'form',
+    ...(options || {}),
+  })
+}
+
+/** 此处后端没有提供注释 POST /picture/upload/batch */
+export async function uploadPictureByBatch(
+  body: API.PictureUploadByBatchRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.BaseResponsePictureVO>('/picture/upload', {
+  return request<API.BaseResponseInteger>('/picture/upload/batch', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    params: {
-      ...params,
-      pictureUploadRequest: undefined,
-      ...params['pictureUploadRequest'],
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** 通过 URL 上传图片（可重新上传） POST /picture/upload/url */
+export async function uploadPictureByUrl(
+  body: API.PictureUploadRequest,
+  options?: { [key: string]: any }
+) {
+  return request<API.BaseResponsePictureVO>('/picture/upload/url', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
     data: body,
     ...(options || {}),
