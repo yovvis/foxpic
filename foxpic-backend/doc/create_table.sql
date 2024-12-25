@@ -25,8 +25,8 @@ create table f_user
     updateTime    datetime     default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',
     isDelete      tinyint      default 0                 not null comment '是否删除'
 ) comment '用户' collate = utf8mb4_unicode_ci;
-create index idx_userName on user (userName);
-create unique index uk_userAccount on user (userAccount)
+create index idx_userName on f_user (userName);
+create unique index uk_userAccount on f_user (userAccount)
 
 -- 帖子表
 create table f_post

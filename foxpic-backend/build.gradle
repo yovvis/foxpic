@@ -31,6 +31,7 @@ ext {
     mysqlVersion = '9.1.0'
     lombokVersion = '1.18.36'
     minioVersion = '8.5.14'
+    cosVersion = '5.6.227'
     hutoolVersion = '5.8.26'
 }
 
@@ -61,7 +62,9 @@ dependencies {
     implementation("cn.dev33:sa-token-redis-jackson:${satokenVersion}")
     implementation 'org.apache.commons:commons-pool2'
     // Minio
-    implementation("io.minio:minio:${minioVersion}")
+//    implementation("io.minio:minio:${minioVersion}")
+    // Cos
+    implementation("com.qcloud:cos_api:${cosVersion}")
     // Hutool
     implementation("cn.hutool:hutool-core:${hutoolVersion}")
     // Spring Boot Configuration

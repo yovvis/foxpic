@@ -4,33 +4,34 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.ayfox.web.config.MinioClientConfig;
-import com.ayfox.web.constant.FileConstant;
+import com.ayfox.web.config.CosClientConfig;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.exception.ThrowUtils;
 import com.ayfox.web.model.dto.file.UploadPictureResult;
+import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.model.ciModel.persistence.ImageInfo;
 import jakarta.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
 @Service
 public class FileManager {
-    @Resource
-    private MinioClientConfig minioClientConfig;
 
     @Resource
-    private MinioManager minioManager;
+    private CosClientConfig cosClientConfig;
+
+    @Resource
+    private CosManager cosManager;
+
+    Logger logger = LoggerFactory.getLogger(FileManager.class);
 
     /**
      * 上传图片
@@ -43,7 +44,7 @@ public class FileManager {
         // 校验图片
         validPicture(multipartFile);
         // 图片上传地址
-        String uuid = RandomUtil.randomString(8);
+        String uuid = RandomUtil.randomString(16);
         String originalFilename = multipartFile.getOriginalFilename();
         // 自己拼接文件上传路径，而不是使用原始文件名称，可以增强安全性
         String uploadFilename = String.format("%s_%s.%s", DateUtil.formatDate(new Date()), uuid,
@@ -54,28 +55,26 @@ public class FileManager {
             // 上传文件
             file = File.createTempFile(uploadPath, null);
             multipartFile.transferTo(file);
-            minioManager.putPictureObject(uploadPath, file);
+            PutObjectResult putObjectResult = cosManager.putPictureObject(uploadPath, file);
             // 获取图片信息对象
-            InputStream ins = minioManager.getObject(uploadPath);
-            BufferedImage image = ImageIO.read(ins);
-//            // 计算宽高
-            int picWidth = image.getWidth();
-            int picHeight = image.getHeight();
+            ImageInfo imageInfo = putObjectResult.getCiUploadResult().getOriginalInfo().getImageInfo();
+            // 计算宽高
+            int picWidth = imageInfo.getWidth();
+            int picHeight = imageInfo.getHeight();
             double picScale = NumberUtil.round(picWidth * 1.0 / picHeight, 2).doubleValue();
             // 封装返回结果
             UploadPictureResult uploadPictureResult = new UploadPictureResult();
-            uploadPictureResult.setUrl(FileConstant.MINIO_HOST + "/" + minioClientConfig.getBucket() + uploadPath);
+            uploadPictureResult.setUrl(cosClientConfig.getHost() + "/" + uploadPath);
             uploadPictureResult.setPicName(FileUtil.mainName(originalFilename));
             uploadPictureResult.setPicSize(FileUtil.size(file));
             uploadPictureResult.setPicWidth(picWidth);
             uploadPictureResult.setPicHeight(picHeight);
             uploadPictureResult.setPicScale(picScale);
-            // todo 可能有问题
-            uploadPictureResult.setPicFormat(FileUtil.getSuffix(originalFilename));
+            uploadPictureResult.setPicFormat(imageInfo.getFormat());
             // 返回可访问的地址
             return uploadPictureResult;
         } catch (Exception e) {
-            log.error("图片上传到对象存储失败", e);
+            logger.error("图片上传到对象存储失败", e);
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "上传失败");
         } finally {
             // 临时文件清理
@@ -114,20 +113,7 @@ public class FileManager {
         // 删除临时文件
         boolean deleteResult = file.delete();
         if (!deleteResult) {
-            log.error("file delete error, filepath = {}", file.getAbsolutePath());
+            logger.error("file delete error, filepath = {}", file.getAbsolutePath());
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,7 @@
 package com.ayfox.web.utils;
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,9 +28,11 @@ public class JsonUtils {
      */
     public static String toJsonStr(Object object) {
         try {
+            if (ObjectUtil.isNull(object)) {
+                return null;
+            }
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "对象转json字符串报错");
         }
     }
@@ -44,9 +48,11 @@ public class JsonUtils {
      */
     public static <T> List<T> toList(String jsonStr, Class<T> clazz) {
         try {
+            if (StrUtil.isBlank(jsonStr)) {
+                return null;
+            }
             return objectMapper.readValue(jsonStr, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "json字符串转list失败");
         }
     }
