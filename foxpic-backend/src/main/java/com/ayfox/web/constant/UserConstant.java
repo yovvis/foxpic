@@ -23,6 +23,16 @@ public interface UserConstant {
     String ADMIN_ROLE = "admin";
 
     /**
+     * 会员
+     */
+    String VIP_ROLE = "vip";
+
+    /**
+     * 超级会员
+     */
+    String SVIP_ROLE = "svip";
+
+    /**
      * 被封号
      */
     String BAN_ROLE = "ban";

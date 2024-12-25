@@ -1,7 +1,7 @@
 package com.ayfox.web.model.vo;
 
-import cn.hutool.json.JSONUtil;
 import com.ayfox.web.model.entity.Picture;
+import com.ayfox.web.utils.JsonUtils;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -104,7 +104,7 @@ public class PictureVO implements Serializable {
         Picture picture = new Picture();
         BeanUtils.copyProperties(pictureVO, picture);
         // 类型不同，需要转换
-        picture.setTags(JSONUtil.toJsonStr(pictureVO.getTags()));
+        picture.setTags(JsonUtils.toJsonStr(pictureVO.getTags()));
         return picture;
     }
 
@@ -118,7 +118,7 @@ public class PictureVO implements Serializable {
         PictureVO pictureVO = new PictureVO();
         BeanUtils.copyProperties(picture, pictureVO);
         // 类型不同，需要转换
-        pictureVO.setTags(JSONUtil.toList(picture.getTags(), String.class));
+        pictureVO.setTags(JsonUtils.toList(picture.getTags(), String.class));
         return pictureVO;
     }
 }

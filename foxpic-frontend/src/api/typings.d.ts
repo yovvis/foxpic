@@ -1,83 +1,71 @@
 declare namespace API {
-  type BaseResponseBoolean_ = {
+  type BaseResponseBoolean = {
     code?: number
     data?: boolean
     message?: string
   }
 
-  type BaseResponseListString_ = {
-    code?: number
-    data?: string[]
-    message?: string
-  }
-
-  type BaseResponseLoginUserVO_ = {
+  type BaseResponseLoginUserVO = {
     code?: number
     data?: LoginUserVO
     message?: string
   }
 
-  type BaseResponseLong_ = {
+  type BaseResponseLong = {
     code?: number
     data?: number
     message?: string
   }
 
-  type BaseResponsePagePicture_ = {
+  type BaseResponsePagePicture = {
     code?: number
-    data?: PagePicture_
+    data?: PagePicture
     message?: string
   }
 
-  type BaseResponsePagePictureVO_ = {
+  type BaseResponsePagePictureVO = {
     code?: number
-    data?: PagePictureVO_
+    data?: PagePictureVO
     message?: string
   }
 
-  type BaseResponsePageUser_ = {
+  type BaseResponsePageUser = {
     code?: number
-    data?: PageUser_
+    data?: PageUser
     message?: string
   }
 
-  type BaseResponsePageUserVO_ = {
+  type BaseResponsePageUserVO = {
     code?: number
-    data?: PageUserVO_
+    data?: PageUserVO
     message?: string
   }
 
-  type BaseResponsePicture_ = {
+  type BaseResponsePicture = {
     code?: number
     data?: Picture
     message?: string
   }
 
-  type BaseResponsePictureTagCategory_ = {
+  type BaseResponsePictureTagCategory = {
     code?: number
     data?: PictureTagCategory
     message?: string
   }
 
-  type BaseResponsePictureVO_ = {
+  type BaseResponsePictureVO = {
     code?: number
     data?: PictureVO
     message?: string
   }
 
-  type BaseResponseString_ = {
-    code?: number
-    data?: string
-    message?: string
-  }
-
-  type BaseResponseUser_ = {
+  type BaseResponseUser = {
     code?: number
     data?: User
     message?: string
   }
 
-  type BaseResponseUserVO_ = {
+  type BaseResponseUserVO = {
     code?: number
     data?: UserVO
     message?: string
@@ -87,201 +75,206 @@ declare namespace API {
     id?: number
   }
 
-  type deleteUsingPUTParams = {
-    /** filename */
-    filename: string
+  type getPictureByIdParams = {
+    id: number
   }
 
-  type downloadUsingGETParams = {
-    /** filename */
-    filename: string
+  type getPictureVOByIdParams = {
+    id: number
   }
 
-  type getHttpUrlUsingGETParams = {
-    /** filename */
-    filename: string
+  type getUserByIdParams = {
+    id: number
   }
 
-  type getPictureByIdUsingGETParams = {
-    /** id */
-    id?: number
-  }
-
-  type getPictureVOByIdUsingGETParams = {
-    /** id */
-    id?: number
-  }
-
-  type getUserByIdUsingGETParams = {
-    /** id */
-    id?: number
-  }
-
-  type getUserVOByIdUsingGETParams = {
-    /** id */
-    id?: number
+  type getUserVOByIdParams = {
+    id: number
   }
 
   type LoginUserVO = {
-    createTime?: string
-    editTime?: string
     id?: number
-    updateTime?: string
-    userAvatar?: string
     userName?: string
+    userAvatar?: string
     userProfile?: string
     userRole?: string
     vipNumber?: number
+    editTime?: string
+    createTime?: string
+    updateTime?: string
   }
 
-  type PagePicture_ = {
-    current?: number
-    pages?: number
+  type OrderItem = {
+    column?: string
+    asc?: boolean
+  }
+
+  type PagePicture = {
     records?: Picture[]
-    size?: number
     total?: number
+    size?: number
+    current?: number
+    orders?: OrderItem[]
+    optimizeCountSql?: PagePicture
+    searchCount?: PagePicture
+    optimizeJoinOfCountSql?: boolean
+    maxLimit?: number
+    countId?: string
+    pages?: number
   }
 
-  type PagePictureVO_ = {
-    current?: number
-    pages?: number
+  type PagePictureVO = {
     records?: PictureVO[]
-    size?: number
     total?: number
+    size?: number
+    current?: number
+    orders?: OrderItem[]
+    optimizeCountSql?: PagePictureVO
+    searchCount?: PagePictureVO
+    optimizeJoinOfCountSql?: boolean
+    maxLimit?: number
+    countId?: string
+    pages?: number
   }
 
-  type PageUser_ = {
-    current?: number
-    pages?: number
+  type PageUser = {
     records?: User[]
-    size?: number
     total?: number
+    size?: number
+    current?: number
+    orders?: OrderItem[]
+    optimizeCountSql?: PageUser
+    searchCount?: PageUser
+    optimizeJoinOfCountSql?: boolean
+    maxLimit?: number
+    countId?: string
+    pages?: number
   }
 
-  type PageUserVO_ = {
-    current?: number
-    pages?: number
+  type PageUserVO = {
     records?: UserVO[]
-    size?: number
     total?: number
+    size?: number
+    current?: number
+    orders?: OrderItem[]
+    optimizeCountSql?: PageUserVO
+    searchCount?: PageUserVO
+    optimizeJoinOfCountSql?: boolean
+    maxLimit?: number
+    countId?: string
+    pages?: number
   }
 
   type Picture = {
-    category?: string
-    createTime?: string
-    editTime?: string
     id?: number
-    introduction?: string
-    isDelete?: number
+    url?: string
     name?: string
-    picFormat?: string
-    picHeight?: number
-    picScale?: number
+    introduction?: string
+    category?: string
+    tags?: string
     picSize?: number
     picWidth?: number
-    tags?: string
-    updateTime?: string
-    url?: string
+    picHeight?: number
+    picScale?: number
+    picFormat?: string
     userId?: number
+    createTime?: string
+    editTime?: string
+    updateTime?: string
+    isDelete?: number
   }
 
   type PictureEditRequest = {
-    category?: string
     id?: number
-    introduction?: string
     name?: string
+    introduction?: string
+    category?: string
     tags?: string[]
   }
 
   type PictureQueryRequest = {
-    category?: string
     current?: number
-    id?: number
-    introduction?: string
-    name?: string
     pageSize?: number
-    picFormat?: string
-    picHeight?: number
-    picScale?: number
-    picSize?: number
-    picWidth?: number
-    searchText?: string
     sortField?: string
     sortOrder?: string
+    id?: number
+    name?: string
+    introduction?: string
+    category?: string
     tags?: string[]
+    picSize?: number
+    picWidth?: number
+    picHeight?: number
+    picScale?: number
+    picFormat?: string
+    searchText?: string
     userId?: number
   }
 
   type PictureTagCategory = {
-    categoryList?: string[]
     tagList?: string[]
+    categoryList?: string[]
   }
 
   type PictureUpdateRequest = {
-    category?: string
     id?: number
-    introduction?: string
     name?: string
+    introduction?: string
+    category?: string
     tags?: string[]
+  }
+
+  type PictureUploadRequest = {
+    id?: number
   }
 
   type PictureVO = {
-    category?: string
-    createTime?: string
-    editTime?: string
     id?: number
-    introduction?: string
+    url?: string
     name?: string
-    picFormat?: string
-    picHeight?: number
-    picScale?: number
+    introduction?: string
+    tags?: string[]
+    category?: string
     picSize?: number
     picWidth?: number
-    tags?: string[]
-    updateTime?: string
-    url?: string
-    user?: UserVO
+    picHeight?: number
+    picScale?: number
+    picFormat?: string
     userId?: number
+    createTime?: string
+    editTime?: string
+    updateTime?: string
+    user?: UserVO
   }
 
-  type statObjUsingGETParams = {
-    /** filename */
-    filename: string
-  }
-
-  type uploadFileUsingPOSTParams = {
-    biz?: string
-  }
-
-  type uploadPictureUsingPOSTParams = {
-    id?: number
+  type uploadPictureParams = {
+    pictureUploadRequest: PictureUploadRequest
   }
 
   type User = {
-    createTime?: string
-    editTime?: string
     id?: number
-    inviteUser?: number
-    isDelete?: number
-    mpOpenId?: string
-    shareCode?: string
-    unionId?: string
-    updateTime?: string
     userAccount?: string
-    userAvatar?: string
-    userName?: string
     userPassword?: string
+    unionId?: string
+    mpOpenId?: string
+    userName?: string
+    userAvatar?: string
     userProfile?: string
     userRole?: string
+    vipNumber?: number
     vipCode?: string
     vipExpireTime?: string
-    vipNumber?: number
+    shareCode?: string
+    inviteUser?: number
+    editTime?: string
+    createTime?: string
+    updateTime?: string
+    isDelete?: number
   }
 
   type UserAddRequest = {
+    userName?: string
     userAccount?: string
     userAvatar?: string
-    userName?: string
     userRole?: string
   }
 
@@ -292,43 +285,43 @@ declare namespace API {
 
   type UserQueryRequest = {
     current?: number
-    id?: number
     pageSize?: number
     sortField?: string
     sortOrder?: string
-    userAccount?: string
+    id?: number
     userName?: string
+    userAccount?: string
     userProfile?: string
     userRole?: string
   }
 
   type UserRegisterRequest = {
-    checkPassword?: string
     userAccount?: string
     userPassword?: string
+    checkPassword?: string
   }
 
   type UserUpdateMyRequest = {
-    userAvatar?: string
     userName?: string
+    userAvatar?: string
     userProfile?: string
   }
 
   type UserUpdateRequest = {
     id?: number
-    userAvatar?: string
     userName?: string
+    userAvatar?: string
     userProfile?: string
     userRole?: string
   }
 
   type UserVO = {
-    createTime?: string
     id?: number
     userAccount?: string
-    userAvatar?: string
     userName?: string
+    userAvatar?: string
     userProfile?: string
     userRole?: string
+    createTime?: string
   }
 }

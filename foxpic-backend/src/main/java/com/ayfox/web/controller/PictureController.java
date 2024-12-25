@@ -1,6 +1,5 @@
 package com.ayfox.web.controller;
 
-import cn.hutool.json.JSONUtil;
 import com.ayfox.web.annotation.AuthCheck;
 import com.ayfox.web.common.BaseResponse;
 import com.ayfox.web.common.DeleteRequest;
@@ -19,19 +18,23 @@ import com.ayfox.web.model.vo.PictureTagCategory;
 import com.ayfox.web.model.vo.PictureVO;
 import com.ayfox.web.service.PictureService;
 import com.ayfox.web.service.UserService;
+import com.ayfox.web.utils.JsonUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.extern.slf4j.Slf4j;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
-@Slf4j
+@Tag(name = "PictureController", description = "图片接口")
 @RestController
 @RequestMapping("/picture")
 public class PictureController {
@@ -42,11 +45,19 @@ public class PictureController {
     @Resource
     private PictureService pictureService;
 
+    Logger logger = Logger.getLogger(this.getClass().getName());
+
     /**
      * 上传图片（可重新上传）
+     *
+     * @param multipartFile
+     * @param pictureUploadRequest
+     * @param request
+     * @return
      */
-    @PostMapping("/upload")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    @Operation(summary = "上传图片（可重新上传）")
+    @PostMapping("/upload")
     public BaseResponse<PictureVO> uploadPicture(
             @RequestPart("file") MultipartFile multipartFile,
             PictureUploadRequest pictureUploadRequest,
@@ -56,6 +67,14 @@ public class PictureController {
         return ResultUtils.success(pictureVO);
     }
 
+    /**
+     * 删除图片
+     *
+     * @param deleteRequest
+     * @param request
+     * @return
+     */
+    @Operation(summary = "删除图片")
     @PostMapping("/delete")
     public BaseResponse<Boolean> deletePicture(@RequestBody DeleteRequest deleteRequest
             , HttpServletRequest request) {
@@ -80,9 +99,13 @@ public class PictureController {
 
     /**
      * 更新图片（仅管理员可用）
+     *
+     * @param pictureUpdateRequest
+     * @return
      */
-    @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    @Operation(summary = "更新图片（仅管理员可用）")
+    @PostMapping("/update")
     public BaseResponse<Boolean> updatePicture(@RequestBody PictureUpdateRequest pictureUpdateRequest) {
         if (pictureUpdateRequest == null || pictureUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -91,7 +114,7 @@ public class PictureController {
         Picture picture = new Picture();
         BeanUtils.copyProperties(pictureUpdateRequest, picture);
         // 注意将 list 转为 string
-        picture.setTags(JSONUtil.toJsonStr(pictureUpdateRequest.getTags()));
+        picture.setTags(JsonUtils.toJsonStr(pictureUpdateRequest.getTags()));
         // 数据校验
         pictureService.validPicture(picture);
         // 判断是否存在
@@ -106,9 +129,14 @@ public class PictureController {
 
     /**
      * 根据 id 获取图片（仅管理员可用）
+     *
+     * @param id
+     * @param request
+     * @return
      */
-    @GetMapping("/get")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    @Operation(summary = "根据 id 获取图片（仅管理员可用）")
+    @GetMapping("/get")
     public BaseResponse<Picture> getPictureById(long id, HttpServletRequest request) {
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
         // 查询数据库
@@ -120,7 +148,12 @@ public class PictureController {
 
     /**
      * 根据 id 获取图片（封装类）
+     *
+     * @param id
+     * @param request
+     * @return
      */
+    @Operation(summary = "根据 id 获取图片（封装类）")
     @GetMapping("/get/vo")
     public BaseResponse<PictureVO> getPictureVOById(long id, HttpServletRequest request) {
         ThrowUtils.throwIf(id <= 0, ErrorCode.PARAMS_ERROR);
@@ -133,9 +166,13 @@ public class PictureController {
 
     /**
      * 分页获取图片列表（仅管理员可用）
+     *
+     * @param pictureQueryRequest
+     * @return
      */
-    @PostMapping("/list/page")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    @Operation(summary = "分页获取图片列表（仅管理员可用）")
+    @PostMapping("/list/page")
     public BaseResponse<Page<Picture>> listPictureByPage(@RequestBody PictureQueryRequest pictureQueryRequest) {
         long current = pictureQueryRequest.getCurrent();
         long size = pictureQueryRequest.getPageSize();
@@ -147,7 +184,12 @@ public class PictureController {
 
     /**
      * 分页获取图片列表（封装类）
+     *
+     * @param pictureQueryRequest
+     * @param request
+     * @return
      */
+    @Operation(summary = "分页获取图片列表（封装类）")
     @PostMapping("/list/page/vo")
     public BaseResponse<Page<PictureVO>> listPictureVOByPage(@RequestBody PictureQueryRequest pictureQueryRequest,
                                                              HttpServletRequest request) {
@@ -164,7 +206,12 @@ public class PictureController {
 
     /**
      * 编辑图片（给用户使用）
+     *
+     * @param pictureEditRequest
+     * @param request
+     * @return
      */
+    @Operation(summary = "编辑图片（给用户使用）")
     @PostMapping("/edit")
     public BaseResponse<Boolean> editPicture(@RequestBody PictureEditRequest pictureEditRequest, HttpServletRequest request) {
         if (pictureEditRequest == null || pictureEditRequest.getId() <= 0) {
@@ -174,7 +221,7 @@ public class PictureController {
         Picture picture = new Picture();
         BeanUtils.copyProperties(pictureEditRequest, picture);
         // 注意将 list 转为 string
-        picture.setTags(JSONUtil.toJsonStr(pictureEditRequest.getTags()));
+        picture.setTags(JsonUtils.toJsonStr(pictureEditRequest.getTags()));
         // 设置编辑时间
         picture.setEditTime(new Date());
         // 数据校验
@@ -194,6 +241,12 @@ public class PictureController {
         return ResultUtils.success(true);
     }
 
+    /**
+     * 给定 mock图片分类
+     *
+     * @return
+     */
+    @Operation(summary = "给定 mock图片分类")
     @GetMapping("/tag_category")
     public BaseResponse<PictureTagCategory> listPictureTagCategory() {
         PictureTagCategory pictureTagCategory = new PictureTagCategory();

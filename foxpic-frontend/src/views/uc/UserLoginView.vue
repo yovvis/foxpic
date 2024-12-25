@@ -29,7 +29,7 @@
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore.ts'
 import { message } from 'ant-design-vue'
-import { userLoginUsingPost } from '@/api/userController.ts'
+import { userLogin } from '@/api/userController.ts'
 
 /**
  * 表单信息
@@ -46,7 +46,7 @@ const userStore = useUserStore()
  * @param data
  */
 const handleSubmit = async (values: any) => {
-  const res = await userLoginUsingPost(values)
+  const res = await userLogin(values)
   // 登录成功，跳转到主页
   if (res.data.code === 0 && res.data.data) {
     await userStore.fetchLoginUser()

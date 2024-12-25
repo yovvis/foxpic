@@ -42,14 +42,14 @@
 import { useUserStore } from '@/stores/userStore.ts'
 import notLoginUser from '@/assets/notLogin.png'
 import router from '@/router'
-import { userLogoutUsingPost } from '@/api/userController.ts'
+import { userLogout } from '@/api/userController.ts'
 import { message } from 'ant-design-vue'
 
 const userStore = useUserStore()
 
 const doDropItemClick = async (key: string) => {
   if (key === 'logout') {
-    const res = await userLogoutUsingPost()
+    const res = await userLogout()
     if (res.data.code === 0) {
       userStore.setLoginUser({
         userName: '未登录',

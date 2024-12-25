@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import ACCESS_ENUM from '@/hooks/access/accessEnum.ts'
-import { getLoginUserUsingGet } from '@/api/userController.ts'
+import { getLoginUser } from '@/api/userController.ts'
 
 export const useUserStore = defineStore('userStore', () => {
   const loginUser = ref<API.LoginUserVO>({
@@ -12,7 +12,7 @@ export const useUserStore = defineStore('userStore', () => {
    * 远程获取登录用户信息
    */
   async function fetchLoginUser() {
-    await getLoginUserUsingGet().then((res) => {
+    await getLoginUser().then((res: any) => {
       if (res.data.code === 0 && res.data.data) {
         loginUser.value = res.data.data
       } else {

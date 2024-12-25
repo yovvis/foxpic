@@ -52,11 +52,7 @@
 import PictureUpload from '@/components/PictureUpload.vue'
 import { onMounted, reactive, ref } from 'vue'
 import { message } from 'ant-design-vue'
-import {
-  editPictureUsingPost,
-  getPictureVoByIdUsingGet,
-  listPictureTagCategoryUsingGet,
-} from '@/api/pictureController.ts'
+import { editPicture, getPictureVoById, listPictureTagCategory } from '@/api/pictureController.ts'
 import { useRoute, useRouter } from 'vue-router'
 
 const picture = ref<API.PictureVO>()
@@ -83,7 +79,7 @@ const handleSubmit = async (values: any) => {
   if (!pictureId) {
     return
   }
-  const res = await editPictureUsingPost({
+  const res = await editPicture({
     id: pictureId,
     ...values,
   })
@@ -107,7 +103,7 @@ const tagOptions = ref<string[]>([])
  * @param values
  */
 const getTagCategoryOptions = async () => {
-  const res = await listPictureTagCategoryUsingGet()
+  const res = await listPictureTagCategory()
   if (res.data.code === 0 && res.data.data) {
     tagOptions.value = (res.data.data.tagList ?? []).map((data: string) => {
       return {
@@ -137,7 +133,7 @@ const getOldPicture = async () => {
   // 获取到 id
   const id = route.query?.id as undefined | number
   if (id) {
-    const res = await getPictureVoByIdUsingGet({
+    const res = await getPictureVoById({
       id,
     })
     if (res.data.code === 0 && res.data.data) {

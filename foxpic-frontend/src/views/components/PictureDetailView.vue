@@ -70,7 +70,7 @@
 
 <script setup lang="ts">
 import { computed, h, onMounted, ref } from 'vue'
-import { deletePictureUsingPost, getPictureVoByIdUsingGet } from '@/api/pictureController.ts'
+import { deletePicture, getPictureVoById } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { useUserStore } from '@/stores/userStore.ts'
@@ -101,7 +101,7 @@ const canEdit = computed(() => {
 // 获取图片详情
 const fetchPictureDetail = async () => {
   try {
-    const res = await getPictureVoByIdUsingGet({
+    const res = await getPictureVoById({
       id: props.id,
     })
     if (res.data.code === 0 && res.data.data) {
@@ -131,7 +131,7 @@ const doDelete = async () => {
   if (!id) {
     return
   }
-  const res = await deletePictureUsingPost({ id })
+  const res = await deletePicture({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
   } else {

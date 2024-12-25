@@ -4,9 +4,9 @@ import com.ayfox.web.config.MinioClientConfig;
 import io.minio.*;
 import io.minio.http.Method;
 import io.minio.messages.Item;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;

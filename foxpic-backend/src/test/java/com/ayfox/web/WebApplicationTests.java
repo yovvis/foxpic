@@ -1,11 +1,13 @@
 package com.ayfox.web;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-/**
- * 主类测试
- */
 @SpringBootTest
-class MainApplicationTests {
+class WebApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
 
 }

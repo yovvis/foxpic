@@ -6,14 +6,9 @@ package com.ayfox.web.constant;
 public interface FileConstant {
 
     /**
-     * 存储策略
-     */
-    String S3_STRATEGY = "minio";
-
-    /**
      * COS 访问地址
      */
-    String COS_HOST = "https://api.oss.tenyon.cn";
+    String COS_HOST = "https://api.oss.cqbo.com";
 
     /**
      * Minio 访问地址

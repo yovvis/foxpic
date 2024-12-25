@@ -3,7 +3,6 @@ package com.ayfox.web.controller;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.RandomUtil;
-import cn.hutool.json.JSONUtil;
 import com.ayfox.web.common.BaseResponse;
 import com.ayfox.web.common.ResultUtils;
 import com.ayfox.web.config.MinioClientConfig;
@@ -16,14 +15,14 @@ import com.ayfox.web.model.entity.User;
 import com.ayfox.web.model.enums.FileUploadBizEnum;
 import com.ayfox.web.service.UserService;
 import io.minio.StatObjectResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -32,8 +31,8 @@ import java.util.List;
 /**
  * 文件接口
  */
-@RestController
-@RequestMapping("/file")
+//@RestController
+//@RequestMapping("/file")
 public class FileController {
     Logger logger = LoggerFactory.getLogger(FileController.class);
 

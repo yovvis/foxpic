@@ -39,7 +39,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { deleteUserUsingPost, listUserVoByPageUsingPost } from '@/api/userController.ts'
+import { deleteUser, listUserVoByPage } from '@/api/userController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 import ACCESS_ENUM from '@/hooks/access/accessEnum.ts'
@@ -107,7 +107,7 @@ const searchParams = reactive<API.UserQueryRequest>({
 
 // 获取数据
 const fetchData = async () => {
-  const res = await listUserVoByPageUsingPost({
+  const res = await listUserVoByPage({
     ...searchParams,
   })
   if (res.data.code === 0 && res.data.data) {
@@ -153,7 +153,7 @@ const doDelete = async (id: number | undefined) => {
   if (!id) {
     return
   }
-  const res = await deleteUserUsingPost({ id })
+  const res = await deleteUser({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
     // 刷新数据

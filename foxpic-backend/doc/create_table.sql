@@ -4,7 +4,7 @@ create database if not exists demo;
 -- 切换库
 use demo;
 -- 用户表
-create table user
+create table f_user
 (
     id            bigint auto_increment comment 'id' primary key,
     userAccount   varchar(256)                           not null comment '账号',
@@ -29,7 +29,7 @@ create index idx_userName on user (userName);
 create unique index uk_userAccount on user (userAccount)
 
 -- 帖子表
-create table post
+create table f_post
 (
     id         bigint auto_increment comment 'id' primary key,
     title      varchar(512) null comment '标题',
@@ -45,7 +45,7 @@ create table post
 ) comment '帖子' collate = utf8mb4_unicode_ci;
 
 -- 帖子点赞表（硬删除）
-create table post_thumb
+create table f_post_thumb
 (
     id         bigint auto_increment comment 'id' primary key,
     postId     bigint                             not null comment '帖子 id',
@@ -57,7 +57,7 @@ create table post_thumb
 ) comment '帖子点赞';
 
 -- 帖子收藏表（硬删除）
-create table post_favour
+create table f_post_favour
 (
     id         bigint auto_increment comment 'id' primary key,
     postId     bigint                             not null comment '帖子 id',
@@ -94,9 +94,15 @@ create table if not exists picture
     INDEX idx_userId (userId)              -- 提升基于用户 ID 的查询性能
     ) comment '图片' collate = utf8mb4_unicode_ci;
 
+Alter table picture
+    add column reviewStatus int default 0 not null comment '审核状态：0-待审核；1-通过；2-拒绝',
+    add column reviewMessage varchar(512) null comment '审核信息',
+    add column reviewerId bigint null comment '审核人ID',
+    add column revieweTime datetime null comment '审核时间'
+
 
 -- 用户数据(密码 11111)
-INSERT INTO user(id, userAccount, userPassword, unionId, mpOpenId, userName, userAvatar, userProfile, userRole)
+INSERT INTO f_user(id, userAccount, userPassword, unionId, mpOpenId, userName, userAvatar, userProfile, userRole)
 VALUES (1, 'user1', '492a65bef0ab2fac75758f004f3eaf35', 'unionId1', 'mpOpenId1', 'user1',
         'https://api.oss.tenyon.cn/tenyon/assets/default.png', '喜欢编程的小白', 'user'),
        (2, 'user2', '492a65bef0ab2fac75758f004f3eaf35', 'unionId2', 'mpOpenId2', 'user2',

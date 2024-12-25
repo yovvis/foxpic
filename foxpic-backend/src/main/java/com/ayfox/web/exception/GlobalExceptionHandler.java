@@ -1,7 +1,7 @@
 package com.ayfox.web.exception;
 
-import com.ayfox.web.common.ResultUtils;
 import com.ayfox.web.common.BaseResponse;
+import com.ayfox.web.common.ResultUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;

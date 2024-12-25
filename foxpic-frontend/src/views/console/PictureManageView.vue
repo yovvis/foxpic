@@ -71,7 +71,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { deletePictureUsingPost, listPictureByPageUsingPost } from '@/api/pictureController.ts'
+import { deletePicture, listPictureByPage } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
 
@@ -139,7 +139,7 @@ const searchParams = reactive<API.PictureQueryRequest>({
 
 // 获取数据
 const fetchData = async () => {
-  const res = await listPictureByPageUsingPost({
+  const res = await listPictureByPage({
     ...searchParams,
   })
   if (res.data.code === 0 && res.data.data) {
@@ -185,7 +185,7 @@ const doDelete = async (id: number | undefined) => {
   if (!id) {
     return
   }
-  const res = await deletePictureUsingPost({ id })
+  const res = await deletePicture({ id })
   if (res.data.code === 0) {
     message.success('删除成功')
     // 刷新数据

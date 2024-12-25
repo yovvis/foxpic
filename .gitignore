@@ -1,3 +1,10 @@
+#----- cqbo -----
+auto-imports.d.ts
+components.d.ts
+
+application-local.yml
+.rebel.xml
+#----- cqbo -----
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
@@ -93,6 +100,11 @@ buildNumber.properties
 .idea/**/dbnavigator.xml
 
 # Gradle
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 .idea/**/gradle.xml
 .idea/**/libraries
 
@@ -176,6 +188,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-auto-imports.d.ts
-components.d.ts
