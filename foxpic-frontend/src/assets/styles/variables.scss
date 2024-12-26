@@ -1,4 +1,10 @@
 // 薄荷
 @use '../font/pingfangsc/result';
 @use '../cur/cur';
+
 $color: #bdfcc9;
+
+// 菜单下拉
+.ant-menu-sub {
+  min-width: 96px !important;
+}

@@ -60,4 +60,8 @@ const meunItems = computed(() => {
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped>
+.ant-menu-sub {
+  min-width: 88px !important;
+}
+</style>

@@ -1,16 +1,18 @@
 <template>
-  <div class="basic-header">
+  <div id="basic-header">
     <a-row :wrap="false">
       <a-col flex="180px">
-        <div class="title-bar">
-          <img class="logo" src="../../../assets/vue.svg" alt="logo" />
-          <div class="title">亿智狐云图库</div>
-        </div>
+        <router-link to="/">
+          <div class="title-bar">
+            <img class="logo" src="../../../assets/vue.svg" alt="logo" />
+            <div class="title">亿智狐云图库</div>
+          </div>
+        </router-link>
       </a-col>
       <a-col flex="auto">
         <f-menu></f-menu>
       </a-col>
-      <a-col flex="80px">
+      <a-col flex="60px">
         <div class="right">
           <div v-if="userStore.loginUser.id">
             <a-dropdown placement="bottom">
@@ -66,7 +68,7 @@ const doDropItemClick = async (key: string) => {
 }
 </script>
 <style scoped lang="scss">
-.basic-header {
+#basic-header {
   * {
     font-family:
       PingFang SC,

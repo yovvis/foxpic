@@ -8,4 +8,4 @@
 import BasicLayout from '@/layouts/basic-layout.vue'
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>

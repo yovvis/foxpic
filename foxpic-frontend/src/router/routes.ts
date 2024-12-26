@@ -6,6 +6,7 @@ import UserLoginView from '@/views/uc/UserLoginView.vue'
 import PictureManageView from '@/views/console/PictureManageView.vue'
 import PictureDetailView from '@/views/components/PictureDetailView.vue'
 import AddPictureView from '@/views/components/AddPictureView.vue'
+import AddPictureBatchView from '@/views/components/AddPictureBatchView.vue'
 // 路由菜单
 const routes: Array<RouteRecordRaw> = [
   {
@@ -36,34 +37,60 @@ const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: '/console/user_manage',
-    name: 'userManage',
-    component: UserManageView,
+    path: '/console',
+    name: 'console',
     meta: {
-      label: '用户管理',
+      label: '后台管理',
       icon: 'ant-design:crown-outlined',
       roles: ['admin'],
     },
+    children: [
+      {
+        path: '/console/user_manage',
+        name: 'userManage',
+        component: UserManageView,
+        meta: {
+          label: '用户管理',
+          roles: ['admin'],
+        },
+      },
+      {
+        path: '/admin/picture_manage',
+        name: 'pictureManage',
+        component: PictureManageView,
+        meta: {
+          label: '图片管理',
+          roles: ['admin'],
+        },
+      },
+    ],
   },
   {
-    path: '/admin/picture_manage',
-    name: 'pictureManage',
-    component: PictureManageView,
+    path: '/picture',
+    name: 'Picture',
     meta: {
       label: '图片管理',
-      icon: 'ant-design:picture-outlined',
-      roles: ['admin'],
+      icon: 'ant-design:picture-filled',
     },
-  },
-  {
-    path: '/add_picture',
-    name: 'addPicture',
-    component: AddPictureView,
-    meta: {
-      label: '创建图片',
-      roles: ['admin'],
-      hideInMenu: true,
-    },
+    children: [
+      {
+        path: '/add_picture',
+        name: 'addPicture',
+        component: AddPictureView,
+        meta: {
+          label: '创建图片',
+        },
+      },
+      {
+        path: '/add_picture/batch',
+        name: '批量创建图片',
+        component: AddPictureBatchView,
+        meta: {
+          label: '批量创建图片',
+          roles: ['admin'],
+        },
+      },
+    ],
   },
   {
     path: '/picture/:id',
