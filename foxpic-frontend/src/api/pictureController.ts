@@ -101,7 +101,7 @@ export async function listPictureVoByPageWithCache(
   })
 }
 
-/** 此处后端没有提供注释 POST /picture/review */
+/** 审核图片 POST /picture/review */
 export async function doPictureReview(
   body: API.PictureReviewRequest,
   options?: { [key: string]: any },
@@ -180,7 +180,7 @@ export async function uploadPicture(
   })
 }
 
-/** 此处后端没有提供注释 POST /picture/upload/batch */
+/** 批量抓取并创建图片 POST /picture/upload/batch */
 export async function uploadPictureByBatch(
   body: API.PictureUploadByBatchRequest,
   options?: { [key: string]: any },
