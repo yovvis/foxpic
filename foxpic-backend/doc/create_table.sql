@@ -100,6 +100,9 @@ Alter table picture
     add column reviewerId bigint null comment '审核人ID',
     add column revieweTime datetime null comment '审核时间'
 
+Alter table picture
+    add column thumbnailUrl varchar(512) null comment '缩略图Url'
+
 
 -- 用户数据(密码 11111)
 INSERT INTO f_user(id, userAccount, userPassword, unionId, mpOpenId, userName, userAvatar, userProfile, userRole)

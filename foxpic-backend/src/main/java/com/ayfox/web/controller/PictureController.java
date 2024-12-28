@@ -11,6 +11,7 @@ import com.ayfox.web.constant.UserConstant;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.exception.ThrowUtils;
+import com.ayfox.web.manager.CosManager;
 import com.ayfox.web.manager.RedisManager;
 import com.ayfox.web.model.dto.picture.*;
 import com.ayfox.web.model.entity.Picture;
@@ -48,6 +49,9 @@ public class PictureController {
 
     @Resource
     private PictureService pictureService;
+
+    @Resource
+    private CosManager cosManager;
 
     @Resource
     private RedisManager<String> redisManager;
@@ -112,6 +116,7 @@ public class PictureController {
         // 操作数据库
         boolean result = pictureService.removeById(id);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
+        pictureService.clearPictureFile(oldPicture);
         return ResultUtils.success(true);
     }
 
@@ -350,4 +355,5 @@ public class PictureController {
         int uploadCount = pictureService.uploadPictureByBatch(pictureUploadByBatchRequest, loginUser);
         return ResultUtils.success(uploadCount);
     }
+
 }

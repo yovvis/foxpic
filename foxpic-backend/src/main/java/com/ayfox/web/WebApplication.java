@@ -10,6 +10,7 @@ import org.springframework.boot.context.metrics.buffering.BufferingApplicationSt
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -20,6 +21,7 @@ import java.net.UnknownHostException;
 @SpringBootApplication
 @MapperScan("com.ayfox.web.mapper")
 @EnableScheduling
+@EnableAsync
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 public class WebApplication {
 

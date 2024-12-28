@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.exception.ThrowUtils;
+import com.ayfox.web.manager.CosManager;
 import com.ayfox.web.manager.upload.FilePictureUpload;
 import com.ayfox.web.manager.upload.PictureUploadTemplate;
 import com.ayfox.web.manager.upload.UrlPictureUpload;
@@ -35,6 +36,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -59,6 +61,9 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private CosManager cosManager;
 
     Logger logger = LoggerFactory.getLogger(PictureServiceImpl.class);
 
@@ -89,9 +94,10 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         if (pictureUploadRequest != null) {
             pictureId = pictureUploadRequest.getId();
         }
+        Picture oldPicture = null;
         // 如果是更新，判断图片是否存在
         if (pictureId != null) {
-            Picture oldPicture = this.getById(pictureId);
+            oldPicture = this.getById(pictureId);
             ThrowUtils.throwIf(oldPicture == null, ErrorCode.NOT_FOUND_ERROR, "图片不存在");
             // 仅本人或管理员可编辑图片
             if (!oldPicture.getUserId().equals(loginUser.getId()) && !userService.isAdmin(loginUser)) {
@@ -110,6 +116,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
         // 构造要入库的图片信息
         Picture picture = new Picture();
         picture.setUrl(uploadPictureResult.getUrl());
+        picture.setThumbnailUrl(uploadPictureResult.getThumbnailUrl());
         // 支持外层传递图片名称
         String picName = uploadPictureResult.getPicName();
         if (pictureUploadRequest != null && StrUtil.isNotBlank(pictureUploadRequest.getPicName())) {
@@ -131,8 +138,11 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             picture.setId(pictureId);
             picture.setEditTime(new Date());
         }
-
         boolean result = this.saveOrUpdate(picture);
+        // 清理图片
+        if (oldPicture != null) {
+            this.clearPictureFile(oldPicture);
+        }
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR, "图片上传失败，数据库操作失败");
         return PictureVO.objToVo(picture);
     }
@@ -351,7 +361,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
                 logger.info("图片上传成功，id = {}", pictureVO.getId());
                 uploadCount++;
             } catch (Exception e) {
-                log.error("图片上传失败", e);
+                logger.error("图片上传失败", e);
                 continue;
             }
             if (uploadCount >= count) {
@@ -359,6 +369,26 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             }
         }
         return uploadCount;
+    }
+
+    @Async
+    @Override
+    public void clearPictureFile(Picture oldPicture) {
+        // 判断改图片是否被多条记录使用
+        String pictureUrl = oldPicture.getUrl();
+        long count = this.lambdaQuery()
+                .eq(Picture::getUrl, pictureUrl)
+                .count();
+        if (count > 1) {
+            return;
+        }
+        // 删除图片
+        cosManager.deletObject(pictureUrl);
+        // 删除缩略图
+        String thumbnailUrl = oldPicture.getThumbnailUrl();
+        if (StrUtil.isNotBlank(thumbnailUrl)) {
+            cosManager.deletObject(thumbnailUrl);
+        }
     }
 }
 

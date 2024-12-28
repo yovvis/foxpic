@@ -71,6 +71,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       label: '图片管理',
       icon: 'ant-design:picture-filled',
+      roles: ['user'],
     },
     children: [
       {
@@ -100,6 +101,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       label: '图片详情',
       hideInMenu: true,
+      roles: ['user'],
     },
   },
 ]

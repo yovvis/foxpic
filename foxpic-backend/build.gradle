@@ -46,8 +46,8 @@ dependencyManagement {
 dependencies {
     // Spring Boot Web
     implementation("org.springframework.boot:spring-boot-starter-web") {
-        exclude group: 'ch.qos.logback', module: 'logback-classic'
-        exclude group: 'ch.qos.logback', module: 'logback-core'
+        exclude(group: 'ch.qos.logback', module: 'logback-classic')
+        exclude(group: 'ch.qos.logback', module: 'logback-core')
     }
     // Spring Boot AOP
     implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -60,9 +60,16 @@ dependencies {
     // Knife4j
     implementation("com.github.xingfudeshi:knife4j-openapi3-jakarta-spring-boot-starter:${knife4jVersion}")
     // Sa-Token 整合 Redis （使用 jackson 序列化方式）
-    implementation("cn.dev33:sa-token-spring-boot3-starter:${satokenVersion}")
-    implementation("cn.dev33:sa-token-redis-jackson:${satokenVersion}")
-    implementation 'org.apache.commons:commons-pool2'
+    implementation("org.springframework.boot:spring-boot-starter-data-redis"){
+        exclude(group: "io.lettuce", module: "lettuce-core")
+    }
+    implementation 'org.springframework.session:spring-session-data-redis'
+//    implementation("cn.dev33:sa-token-spring-boot3-starter:${satokenVersion}")
+//    implementation("cn.dev33:sa-token-redis-jackson:${satokenVersion}") {
+//        exclude(group: "io.lettuce", module: "lettuce-core")
+//    }
+    implementation 'redis.clients:jedis'
+//    implementation 'org.apache.commons:commons-pool2'
     // Caffeine
     implementation("com.github.ben-manes.caffeine:caffeine:${caffeineVersion}")
     // Minio
