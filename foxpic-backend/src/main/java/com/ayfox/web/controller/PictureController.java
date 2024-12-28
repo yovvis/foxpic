@@ -1,14 +1,17 @@
 package com.ayfox.web.controller;
 
+import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
 import com.ayfox.web.annotation.AuthCheck;
 import com.ayfox.web.common.BaseResponse;
 import com.ayfox.web.common.DeleteRequest;
 import com.ayfox.web.common.ResultUtils;
+import com.ayfox.web.constant.CommonConstant;
 import com.ayfox.web.constant.UserConstant;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
 import com.ayfox.web.exception.ThrowUtils;
+import com.ayfox.web.manager.RedisManager;
 import com.ayfox.web.model.dto.picture.*;
 import com.ayfox.web.model.entity.Picture;
 import com.ayfox.web.model.entity.User;
@@ -18,14 +21,18 @@ import com.ayfox.web.model.vo.PictureVO;
 import com.ayfox.web.service.PictureService;
 import com.ayfox.web.service.UserService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +48,12 @@ public class PictureController {
 
     @Resource
     private PictureService pictureService;
+
+    @Resource
+    private RedisManager<String> redisManager;
+
+    @Resource
+    private Cache<String, String> localCache;
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -208,6 +221,53 @@ public class PictureController {
         // 查询数据库
         Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
                 pictureService.getQueryWrapper(pictureQueryRequest));
+        // 获取封装类
+        return ResultUtils.success(pictureService.getPictureVOPage(picturePage, request));
+    }
+
+    /**
+     * 分页获取图片列表（封装类）
+     *
+     * @param pictureQueryRequest
+     * @param request
+     * @return
+     */
+    @Operation(summary = "分页获取图片列表（封装类）,缓存")
+    @PostMapping("/list/page/vo/cache")
+    public BaseResponse<Page<PictureVO>> listPictureVOByPageWithCache(@RequestBody PictureQueryRequest pictureQueryRequest,
+                                                                      HttpServletRequest request) {
+        long current = pictureQueryRequest.getCurrent();
+        long size = pictureQueryRequest.getPageSize();
+        // 限制爬虫
+        ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
+        // 普通用户默认只能看到审核通过的数据
+        pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
+        // 查缓存
+        String queryCondition = JSONUtil.toJsonStr(pictureQueryRequest);
+        String hashKey = DigestUtils.md5DigestAsHex(queryCondition.getBytes());
+        String cacheKey = String.format("foxpic:listPictureVOByPage:%s", hashKey);
+        // 1.从本地缓存获取值
+        String cachedValue = localCache.getIfPresent(cacheKey);
+        if (cachedValue != null) {
+            Page<PictureVO> cachedPage = JSONUtil.toBean(cachedValue, Page.class);
+            return ResultUtils.success(cachedPage);
+        }
+        // 2.本地缓存未命中，从 Redis中获取值
+        cachedValue = redisManager.get(cacheKey);
+        if (cachedValue != null) {
+            // 更新本地缓存，返回结果
+            localCache.put(cacheKey, cachedValue);
+            Page<PictureVO> cachedPage = JSONUtil.toBean(cachedValue, Page.class);
+            return ResultUtils.success(cachedPage);
+        }
+        // 3.查询数据库
+        Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
+                pictureService.getQueryWrapper(pictureQueryRequest));
+        // 4.更新缓存
+        // 压入 redis缓存 (5-10分钟缓存)
+        redisManager.setex(cacheKey, JSONUtil.toJsonStr(picturePage), CommonConstant.EXPIRES_ONE_MIN * 5 + RandomUtil.randomLong(CommonConstant.ZERO, CommonConstant.EXPIRES_ONE_MIN * 5));
+        // 压入 caffeine缓存
+        localCache.put(cacheKey, JSONUtil.toJsonStr(picturePage));
         // 获取封装类
         return ResultUtils.success(pictureService.getPictureVOPage(picturePage, request));
     }

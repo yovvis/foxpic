@@ -28,6 +28,7 @@ ext {
     mybatisPlusVersion = '3.5.9'
     knife4jVersion = '4.6.0'
     satokenVersion = '1.39.0'
+    caffeineVersion = '3.1.8'
     mysqlVersion = '9.1.0'
     lombokVersion = '1.18.36'
     minioVersion = '8.5.14'
@@ -62,6 +63,8 @@ dependencies {
     implementation("cn.dev33:sa-token-spring-boot3-starter:${satokenVersion}")
     implementation("cn.dev33:sa-token-redis-jackson:${satokenVersion}")
     implementation 'org.apache.commons:commons-pool2'
+    // Caffeine
+    implementation("com.github.ben-manes.caffeine:caffeine:${caffeineVersion}")
     // Minio
 //    implementation("io.minio:minio:${minioVersion}")
     // Cos
