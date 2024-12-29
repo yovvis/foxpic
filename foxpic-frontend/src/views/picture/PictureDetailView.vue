@@ -73,7 +73,7 @@ import { computed, h, onMounted, ref } from 'vue'
 import { deletePicture, getPictureVoById } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { DeleteOutlined, DownloadOutlined, EditOutlined } from '@ant-design/icons-vue'
-import { useUserStore } from '@/stores/userStore.ts'
+import { useUserStore } from '@/store/userStore.ts'
 import { useRouter } from 'vue-router'
 import { downloadImage, formatSize } from '@/utils/fileUtil.ts'
 

@@ -2,7 +2,7 @@
   <div id="basic-layout">
     <a-layout style="min-height: 100vh">
       <a-layout-header>
-        <basic-header></basic-header>
+        <FoxHeader></FoxHeader>
       </a-layout-header>
       <a-layout-content class="content">
         <router-view></router-view>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import BasicHeader from '@/components/layouts/header/f-header.vue'
+import FoxHeader from '@/components/layouts/header/FoxHeader.vue'
 </script>
 
 <style scoped lang="scss">

@@ -42,7 +42,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { deleteUser, listUserVoByPage } from '@/api/userController.ts'
 import { message } from 'ant-design-vue'
 import dayjs from 'dayjs'
-import ACCESS_ENUM from '@/hooks/access/accessEnum.ts'
+import ACCESS_ENUM from '@/core/access/accessEnum.ts'
 
 const columns = [
   {

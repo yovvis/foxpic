@@ -12,10 +12,10 @@
 import { h, ref } from 'vue'
 import { RouteRecordRaw, useRouter } from 'vue-router'
 import { MenuInfo } from 'ant-design-vue/es/menu/src/interface'
-import FIcon from '@/components/common/f-icon.vue'
+import FIcon from '@/components/common/FoxIcon.vue'
 import routes from '@/router/routes.ts'
-import checkAccess from '@/hooks/access/checkAccess.ts'
-import { useUserStore } from '@/stores/userStore.ts'
+import checkAccess from '@/core/access/checkAccess.ts'
+import { useUserStore } from '@/store/userStore.ts'
 
 const router = useRouter()
 const current = ref<string[]>([])
@@ -29,7 +29,10 @@ const handleMenuClick = (info: MenuInfo) => {
   })
 }
 const userStore = useUserStore()
-// 动态生成菜单项
+/**
+ * 生成菜单项
+ * @param routes
+ */
 const getMenuItems: any = (routes: Array<RouteRecordRaw>) => {
   const items = routes.map((route) => {
     // 处理菜单项基本信息
@@ -45,8 +48,12 @@ const getMenuItems: any = (routes: Array<RouteRecordRaw>) => {
   })
   return items
 }
-const meunItems = computed(() => {
-  const visibleRoutes = routes.filter((item) => {
+/**
+ * 过滤路由
+ * @param routes
+ */
+const filterRoutes = (routes: Array<RouteRecordRaw>) => {
+  return routes.filter((item) => {
     if (item.meta?.hideInMenu) {
       return false
     }
@@ -54,14 +61,17 @@ const meunItems = computed(() => {
     if (!checkAccess(userStore.loginUser, JSON.stringify(item.meta?.roles))) {
       return false
     }
+    // 递归过滤 children
+    if (item?.children) {
+      item.children = filterRoutes(item.children)
+    }
     return true
   })
+}
+const meunItems = computed(() => {
+  const visibleRoutes = filterRoutes(routes)
   return getMenuItems(visibleRoutes)
 })
 </script>
 
-<style lang="scss" scoped>
-.ant-menu-sub {
-  min-width: 88px !important;
-}
-</style>
+<style lang="scss" scoped></style>

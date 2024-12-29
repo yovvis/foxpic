@@ -1,4 +1,4 @@
-import ACCESS_ENUM from '@/hooks/access/accessEnum.ts'
+import ACCESS_ENUM from '@/core/access/accessEnum.ts'
 
 /**
  * 检查权限（判断当前登录用户是否具有某个权限）

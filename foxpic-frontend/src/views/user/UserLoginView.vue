@@ -17,7 +17,7 @@
       </a-form-item>
       <div class="tips">
         没有账号？
-        <RouterLink to="/uc/register">去注册</RouterLink>
+        <RouterLink to="/user/register">去注册</RouterLink>
       </div>
       <a-form-item>
         <a-button type="primary" html-type="submit" style="width: 100%">登录</a-button>
@@ -27,7 +27,7 @@
 </template>
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/userStore.ts'
+import { useUserStore } from '@/store/userStore.ts'
 import { message } from 'ant-design-vue'
 import { userLogin } from '@/api/userController.ts'
 

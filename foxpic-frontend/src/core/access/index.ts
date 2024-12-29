@@ -1,7 +1,7 @@
 import router from '@/router'
-import { useUserStore } from '@/stores/userStore.ts'
-import ACCESS_ENUM from '@/hooks/access/accessEnum.ts'
-import checkAccess from '@/hooks/access/checkAccess.ts'
+import { useUserStore } from '@/store/userStore.ts'
+import ACCESS_ENUM from '@/core/access/accessEnum.ts'
+import checkAccess from '@/core/access/checkAccess.ts'
 
 // 进入页面前，进行权限校验
 router.beforeEach(async (to, _, next) => {
@@ -21,7 +21,7 @@ router.beforeEach(async (to, _, next) => {
   if (needAccess !== ACCESS_ENUM.NOT_LOGIN) {
     // 如果没登录，跳转到登录页面
     if (!loginUser || !loginUser.userRole || loginUser.userRole === ACCESS_ENUM.NOT_LOGIN) {
-      next(`/uc/login?redirect=${to.fullPath}`)
+      next(`/user/login?redirect=${to.fullPath}`)
     }
     // 如果已经登录了，判断权限是否足够，如果不足，跳转到无权限页面
     if (!checkAccess(loginUser, needAccess)) {

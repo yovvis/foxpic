@@ -26,7 +26,7 @@
       </a-form-item>
       <div class="tips">
         已有账号？
-        <RouterLink to="/uc/login">去登录</RouterLink>
+        <RouterLink to="/user/login">去登录</RouterLink>
       </div>
       <a-form-item>
         <a-button type="primary" html-type="submit" style="width: 100%">注册</a-button>
@@ -64,7 +64,7 @@ const handleSubmit = async (values: any) => {
   if (res.data.code === 0 && res.data.data) {
     message.success('注册成功')
     router.push({
-      path: '/uc/login',
+      path: '/user/login',
       replace: true,
     })
   } else {
