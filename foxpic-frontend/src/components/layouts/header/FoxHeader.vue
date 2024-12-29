@@ -22,8 +22,11 @@
               ></a-avatar>
               <template #overlay>
                 <a-menu>
-                  <a-menu-item @click="doDropItemClick('profile')">
-                    <span>用户中心 </span>
+                  <a-menu-item>
+                    <router-link to="/account/profile"> 用户中心 </router-link>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <router-link to="/account/my_space"> 我的空间 </router-link>
                   </a-menu-item>
                   <a-menu-item @click="doDropItemClick('logout')">
                     <span>退出登录 </span></a-menu-item
@@ -61,9 +64,6 @@ const doDropItemClick = async (key: string) => {
     } else {
       message.error('退出登录失败，' + res.data.message)
     }
-  }
-  if (key === 'profile') {
-    router.push('/user/profile')
   }
 }
 </script>

@@ -4,9 +4,12 @@
       <a-layout-header>
         <FoxHeader></FoxHeader>
       </a-layout-header>
-      <a-layout-content class="content">
-        <router-view></router-view>
-      </a-layout-content>
+      <a-layout>
+        <GlobalSider class="sider" />
+        <a-layout-content class="content">
+          <router-view></router-view>
+        </a-layout-content>
+      </a-layout>
       <a-layout-footer class="footer">
         <a href="https://tenyon.cn" target="_blank"></a>
         UI BY Yovvis
@@ -23,9 +26,15 @@ import FoxHeader from '@/components/layouts/header/FoxHeader.vue'
 #basic-layout {
   header {
     background-color: white;
-    margin-bottom: 16px;
+    margin-bottom: 2px;
     color: unset;
     padding-inline: 20px;
+  }
+
+  .sider {
+    background: #fff;
+    border-right: 0.5px solid #eee;
+    padding-top: 10px;
   }
 
   .content {

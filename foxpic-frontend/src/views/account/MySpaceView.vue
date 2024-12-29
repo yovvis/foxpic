@@ -12,12 +12,12 @@ import { message } from 'ant-design-vue'
 import { onMounted } from 'vue'
 
 const router = useRouter()
-const loginUserStore = useUserStore()
+const userStore = useUserStore()
 
 // 检查用户是否有个人空间
 const checkUserSpace = async () => {
   // 用户未登录，则直接跳转到登录页面
-  const loginUser = loginUserStore.loginUser
+  const loginUser = userStore.loginUser
   if (!loginUser?.id) {
     router.replace('/user/login')
     return

@@ -54,17 +54,7 @@ const routes: Array<RouteRecordRaw> = [
       hideInMenu: true,
       roles: ['user'],
     },
-    children: [
-      {
-        path: '/account/my_space',
-        name: 'mySpace',
-        component: mySpaceView,
-        meta: {
-          label: '我的空间',
-          roles: ['user'],
-        },
-      },
-    ],
+    children: [],
   },
   {
     path: '/console',
@@ -153,6 +143,15 @@ const routes: Array<RouteRecordRaw> = [
       roles: ['user'],
     },
     children: [
+      {
+        path: '/account/my_space',
+        name: 'mySpace',
+        component: mySpaceView,
+        meta: {
+          label: '我的空间',
+          roles: ['user'],
+        },
+      },
       {
         path: '/add_space',
         name: 'addSpace',
