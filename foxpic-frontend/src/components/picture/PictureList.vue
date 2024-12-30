@@ -30,14 +30,10 @@
               </template>
             </a-card-meta>
             <template v-if="showOp" #actions>
-              <a-space @click="(e) => doEdit(picture, e)">
-                <EditOutlined />
-                编辑
-              </a-space>
-              <a-space @click="(e) => doDelete(picture, e)">
-                <DeleteOutlined />
-                删除
-              </a-space>
+              <FoxIcon icon="ant-design:share-alt-outlined" @click="(e) => doShare(picture, e)" />
+              <FoxIcon icon="ant-design:search-outlined" @click="(e) => doSearch(picture, e)" />
+              <FoxIcon icon="ant-design:edit-outlined" @click="(e) => doEdit(picture, e)" />
+              <FoxIcon icon="ant-design:delete-outlined" @click="(e) => doDelete(picture, e)" />
             </template>
           </a-card>
         </a-list-item>
@@ -73,6 +69,14 @@ const doClickPicture = (picture: API.PictureVO) => {
   })
 }
 
+// 搜索
+const doSearch = (picture, e) => {
+  // 阻止冒泡
+  e.stopPropagation()
+  // 打开新的页面
+  window.open(`/search_picture?pictureId=${picture.id}`)
+}
+
 // 编辑
 const doEdit = (picture, e) => {
   // 阻止冒泡
@@ -101,6 +105,20 @@ const doDelete = async (picture, e) => {
     props.onReload?.()
   } else {
     message.error('删除失败')
+  }
+}
+
+// ----- 分享操作 ----
+const shareModalRef = ref()
+// 分享链接
+const shareLink = ref<string>()
+// 分享
+const doShare = (picture, e) => {
+  // 阻止冒泡
+  e.stopPropagation()
+  shareLink.value = `${window.location.protocol}//${window.location.host}/picture/${picture.id}`
+  if (shareModalRef.value) {
+    shareModalRef.value.openModal()
   }
 }
 </script>

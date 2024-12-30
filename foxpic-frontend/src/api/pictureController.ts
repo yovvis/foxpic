@@ -26,6 +26,21 @@ export async function editPicture(body: API.PictureEditRequest, options?: { [key
   })
 }
 
+/** 此处后端没有提供注释 POST /picture/edit/batch */
+export async function editPictureByBatch(
+  body: API.PictureEditByBatchRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean>('/picture/edit/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
 /** 根据 id 获取图片（仅管理员可用） GET /picture/get */
 export async function getPictureById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -107,6 +122,36 @@ export async function doPictureReview(
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponseBoolean>('/picture/review', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** 此处后端没有提供注释 POST /picture/search/color */
+export async function searchPictureByColor(
+  body: API.SearchPictureByColorRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseListPictureVO>('/picture/search/color', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  })
+}
+
+/** 此处后端没有提供注释 POST /picture/search/picture */
+export async function searchPictureByPicture(
+  body: API.SearchPictureByPictureRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseListImageSearchResult>('/picture/search/picture', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import PictureUpload from '@/components/PictureUpload.vue'
+import PictureUpload from '@/components/picture/PictureUpload.vue'
 import { onMounted, reactive, ref } from 'vue'
 import { message } from 'ant-design-vue'
 import { editPicture, getPictureVoById, listPictureTagCategory } from '@/api/pictureController.ts'

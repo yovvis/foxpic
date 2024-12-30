@@ -1,6 +1,7 @@
 package com.ayfox.web.manager;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.StrUtil;
 import com.ayfox.web.config.CosClientConfig;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.COSObject;
@@ -88,8 +89,8 @@ public class CosManager {
      * @param key 唯一键 public/5/2024-12-28_BnwNTNmABmNRKLBO.png
      */
     public void deletObject(String key) {
-        if (key.contains(cosClientConfig.getHost())) {
-            key = key.replace(cosClientConfig.getHost(), "");
+        if (StrUtil.contains(key, cosClientConfig.getBucket())) {
+            key = StrUtil.removePrefix(key, cosClientConfig.getHost());
         }
         cosClient.deleteObject(cosClientConfig.getBucket(), key);
     }

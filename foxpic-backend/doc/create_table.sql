@@ -91,6 +91,14 @@ ALTER TABLE picture
 -- 创建索引
 CREATE INDEX idx_spaceId ON picture (spaceId);
 
+-- 添加新列
+ALTER TABLE picture
+    ADD COLUMN picColor varchar(16) null comment '图片主色调';
+
+-- 添加新列
+ALTER TABLE picture
+    ADD COLUMN originFormat varchar(32) null comment '源图片格式';
+
 
 -- 用户数据(密码 11111)
 INSERT INTO f_user(id, userAccount, userPassword, unionId, mpOpenId, userName, userAvatar, userProfile, userRole)
