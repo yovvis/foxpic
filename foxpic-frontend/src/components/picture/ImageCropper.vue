@@ -123,12 +123,14 @@ defineExpose({
 })
 </script>
 
-<style>
-.image-cropper {
+<style lang="scss" scoped>
+.ant-modal-body{
   text-align: center;
 }
-
-.image-cropper .vue-cropper {
-  height: 400px !important;
+.image-cropper {
+  .vue-cropper {
+    height: 400px !important;
+  }
 }
+
 </style>
