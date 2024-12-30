@@ -1,10 +1,14 @@
 package com.ayfox.web.controller;
 
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.ayfox.web.annotation.AuthCheck;
-import com.ayfox.web.api.api.imagesearch.ImageSearchApiFacade;
-import com.ayfox.web.api.api.imagesearch.model.ImageSearchResult;
+import com.ayfox.web.api.aliyunai.AliYunAiApi;
+import com.ayfox.web.api.aliyunai.model.CreateOutPaintingTaskResponse;
+import com.ayfox.web.api.aliyunai.model.GetOutPaintingTaskResponse;
+import com.ayfox.web.api.imagesearch.ImageSearchApiFacade;
+import com.ayfox.web.api.imagesearch.model.ImageSearchResult;
 import com.ayfox.web.common.BaseResponse;
 import com.ayfox.web.common.DeleteRequest;
 import com.ayfox.web.common.ResultUtils;
@@ -59,6 +63,9 @@ public class PictureController {
 
     @Resource
     private Cache<String, String> localCache;
+
+    @Resource
+    private AliYunAiApi aliYunAiApi;
 
     Logger logger = Logger.getLogger(this.getClass().getName());
 
@@ -224,7 +231,7 @@ public class PictureController {
             // 普通用户默认只能看到审核通过的数据
             pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
             pictureQueryRequest.setNullSpaceId(true);
-        }else {
+        } else {
             // 私有空间
             User loginUser = userService.getLoginUser(request);
             Space space = spaceService.getById(spaceId);
@@ -282,7 +289,7 @@ public class PictureController {
             // 普通用户默认只能看到审核通过的数据
             pictureQueryRequest.setReviewStatus(PictureReviewStatusEnum.PASS.getValue());
             pictureQueryRequest.setNullSpaceId(true);
-        }else {
+        } else {
             // 私有空间
             User loginUser = userService.getLoginUser(request);
             Space space = spaceService.getById(spaceId);
@@ -294,13 +301,14 @@ public class PictureController {
         // 3.查询数据库
         Page<Picture> picturePage = pictureService.page(new Page<>(current, size),
                 pictureService.getQueryWrapper(pictureQueryRequest));
+        Page<PictureVO> pictureVOPage = pictureService.getPictureVOPage(picturePage, request);
         // 4.更新缓存
         // 压入 redis缓存 (5-10分钟缓存)
-        redisManager.setex(cacheKey, JSONUtil.toJsonStr(picturePage), CommonConstant.EXPIRES_ONE_MIN * 5 + RandomUtil.randomLong(CommonConstant.ZERO, CommonConstant.EXPIRES_ONE_MIN * 5));
+        redisManager.setex(cacheKey, JSONUtil.toJsonStr(pictureVOPage), CommonConstant.EXPIRES_ONE_MIN * 5 + RandomUtil.randomLong(CommonConstant.ZERO, CommonConstant.EXPIRES_ONE_MIN * 5));
         // 压入 caffeine缓存
-        localCache.put(cacheKey, JSONUtil.toJsonStr(picturePage));
+        localCache.put(cacheKey, JSONUtil.toJsonStr(pictureVOPage));
         // 获取封装类
-        return ResultUtils.success(pictureService.getPictureVOPage(picturePage, request));
+        return ResultUtils.success(pictureVOPage);
     }
 
     /**
@@ -423,4 +431,27 @@ public class PictureController {
         return ResultUtils.success(true);
     }
 
+    /**
+     * 创建 AI 扩图任务
+     */
+    @PostMapping("/out_painting/create_task")
+    public BaseResponse<CreateOutPaintingTaskResponse> createPictureOutPaintingTask(@RequestBody CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest,
+                                                                                    HttpServletRequest request) {
+        if (createPictureOutPaintingTaskRequest == null || createPictureOutPaintingTaskRequest.getPictureId() == null) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        User loginUser = userService.getLoginUser(request);
+        CreateOutPaintingTaskResponse response = pictureService.createPictureOutPaintingTask(createPictureOutPaintingTaskRequest, loginUser);
+        return ResultUtils.success(response);
+    }
+
+    /**
+     * 查询 AI 扩图任务
+     */
+    @GetMapping("/out_painting/get_task")
+    public BaseResponse<GetOutPaintingTaskResponse> getPictureOutPaintingTask(String taskId) {
+        ThrowUtils.throwIf(StrUtil.isBlank(taskId), ErrorCode.PARAMS_ERROR);
+        GetOutPaintingTaskResponse task = aliYunAiApi.getOutPaintingTask(taskId);
+        return ResultUtils.success(task);
+    }
 }

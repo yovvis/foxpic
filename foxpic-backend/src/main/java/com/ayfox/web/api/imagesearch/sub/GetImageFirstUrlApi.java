@@ -1,4 +1,4 @@
-package com.ayfox.web.api.api.imagesearch.sub;
+package com.ayfox.web.api.imagesearch.sub;
 
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;

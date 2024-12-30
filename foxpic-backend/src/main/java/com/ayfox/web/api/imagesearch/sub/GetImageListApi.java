@@ -1,11 +1,11 @@
-package com.ayfox.web.api.api.imagesearch.sub;
+package com.ayfox.web.api.imagesearch.sub;
 
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.ayfox.web.api.api.imagesearch.model.ImageSearchResult;
+import com.ayfox.web.api.imagesearch.model.ImageSearchResult;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
 import org.slf4j.Logger;

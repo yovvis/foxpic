@@ -1,5 +1,6 @@
 package com.ayfox.web.service;
 
+import com.ayfox.web.api.aliyunai.model.CreateOutPaintingTaskResponse;
 import com.ayfox.web.model.dto.picture.*;
 import com.ayfox.web.model.entity.Picture;
 import com.ayfox.web.model.entity.User;
@@ -137,4 +138,13 @@ public interface PictureService extends IService<Picture> {
      * @param loginUser
      */
     void editPictureByBatch(PictureEditByBatchRequest pictureEditByBatchRequest, User loginUser);
+
+
+    /**
+     * 创建扩图任务
+     *
+     * @param createPictureOutPaintingTaskRequest
+     * @param loginUser
+     */
+    CreateOutPaintingTaskResponse createPictureOutPaintingTask(CreatePictureOutPaintingTaskRequest createPictureOutPaintingTaskRequest, User loginUser);
 }

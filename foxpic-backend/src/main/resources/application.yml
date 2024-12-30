@@ -90,6 +90,8 @@ s3:
     secretKey: ${s3.cos.secretKey}
     region: ${s3.cos.region}
     bucket: ${s3.cos.bucket}
+aliyunai:
+  apiKey: ${aliyunai.apiKey}
 # springdoc-openapi项目配置
 springdoc:
   swagger-ui:

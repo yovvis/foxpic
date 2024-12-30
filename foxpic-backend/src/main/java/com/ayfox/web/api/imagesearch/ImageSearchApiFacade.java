@@ -1,9 +1,9 @@
-package com.ayfox.web.api.api.imagesearch;
+package com.ayfox.web.api.imagesearch;
 
-import com.ayfox.web.api.api.imagesearch.model.ImageSearchResult;
-import com.ayfox.web.api.api.imagesearch.sub.GetImageFirstUrlApi;
-import com.ayfox.web.api.api.imagesearch.sub.GetImageListApi;
-import com.ayfox.web.api.api.imagesearch.sub.GetImagePageUrlApi;
+import com.ayfox.web.api.imagesearch.model.ImageSearchResult;
+import com.ayfox.web.api.imagesearch.sub.GetImageFirstUrlApi;
+import com.ayfox.web.api.imagesearch.sub.GetImageListApi;
+import com.ayfox.web.api.imagesearch.sub.GetImagePageUrlApi;
 
 import java.util.List;
 

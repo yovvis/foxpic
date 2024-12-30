@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { listPictureTagCategory, listPictureVoByPageWithCache } from '@/api/pictureController.ts'
+import { listPictureTagCategory, listPictureVoByPage, listPictureVoByPageWithCache } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router' // 定义数据
 
@@ -170,18 +170,18 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #homePage {
   margin-bottom: 16px;
-}
 
-#homePage .search-bar {
-  max-width: 480px;
-  margin: 0 auto 16px;
-}
+  .search-bar {
+    max-width: 480px;
+    margin: 0 auto 16px;
+  }
 
-#homePage .tag-bar {
-  margin-bottom: 16px;
+  .tag-bar {
+    margin-bottom: 16px;
+  }
 }
 </style>
 

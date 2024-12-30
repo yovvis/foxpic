@@ -1,4 +1,4 @@
-package com.ayfox.web.api.api.imagesearch.model;
+package com.ayfox.web.api.imagesearch.model;
 
 import lombok.Data;
 

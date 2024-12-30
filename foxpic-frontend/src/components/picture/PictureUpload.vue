@@ -37,7 +37,7 @@ const props = defineProps<Props>()
 const handleUpload = async ({ file }: any) => {
   loading.value = true
   try {
-    const params = props.picture ? { id: props.picture.id } : {}
+    const params: API.PictureUploadRequest = props.picture ? { id: props.picture.id } : {}
     params.spaceId = props.spaceId
     const res = await uploadPicture(params, {}, file)
     if (res.data.code === 0 && res.data.data) {
@@ -74,17 +74,17 @@ const beforeUpload = (file: UploadProps['fileList'][number]) => {
   return isJpgOrPng && isLt2M
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .picture-upload :deep(.ant-upload) {
   width: 100% !important;
   height: 100% !important;
   min-width: 152px;
   min-height: 152px;
-}
 
-.picture-upload img {
-  max-width: 100%;
-  max-height: 480px;
+  img {
+    max-width: 100%;
+    max-height: 480px;
+  }
 }
 
 .ant-upload-select-picture-card i {

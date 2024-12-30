@@ -42,7 +42,7 @@ export async function editSpace(body: API.SpaceEditRequest, options?: { [key: st
 export async function getSpaceById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getSpaceByIdParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseSpace>('/space/get', {
     method: 'GET',
@@ -57,7 +57,7 @@ export async function getSpaceById(
 export async function getSpaceVoById(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.getSpaceVOByIdParams,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponseSpaceVO>('/space/get/vo', {
     method: 'GET',
@@ -79,7 +79,7 @@ export async function listSpaceLevel(options?: { [key: string]: any }) {
 /** 分页获取空间列表（仅管理员可用） POST /space/list/page */
 export async function listSpaceByPage(
   body: API.SpaceQueryRequest,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageSpace>('/space/list/page', {
     method: 'POST',
@@ -94,7 +94,7 @@ export async function listSpaceByPage(
 /** 分页获取空间列表（封装类） POST /space/list/page/vo */
 export async function listSpaceVoByPage(
   body: API.SpaceQueryRequest,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.BaseResponsePageSpaceVO>('/space/list/page/vo', {
     method: 'POST',
