@@ -454,7 +454,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
             return;
         }
         // 删除原图
-        cosManager.deletObject(StrUtil.subBefore(pictureUrl, ".", true) + "." + oldPicture.getOriginFormat());
+//        cosManager.deletObject(StrUtil.subBefore(pictureUrl, ".", true) + "." + oldPicture.getOriginFormat());
         // 删除webp图片
         cosManager.deletObject(pictureUrl);
         // 删除缩略图

@@ -30,23 +30,24 @@
               </template>
             </a-card-meta>
             <template v-if="showOp" #actions>
-              <FoxIcon icon="ant-design:share-alt-outlined" @click="(e) => doShare(picture, e)" />
-              <FoxIcon icon="ant-design:search-outlined" @click="(e) => doSearch(picture, e)" />
-              <FoxIcon icon="ant-design:edit-outlined" @click="(e) => doEdit(picture, e)" />
-              <FoxIcon icon="ant-design:delete-outlined" @click="(e) => doDelete(picture, e)" />
+              <Icon icon="ant-design:share-alt-outlined" @click="(e) => doShare(picture, e)" />
+              <Icon icon="ant-design:search-outlined" @click="(e) => doSearch(picture, e)" />
+              <Icon icon="ant-design:edit-outlined" @click="(e) => doEdit(picture, e)" />
+              <Icon icon="ant-design:delete-outlined" @click="(e) => doDelete(picture, e)" />
             </template>
           </a-card>
         </a-list-item>
       </template>
     </a-list>
+    <ShareModal ref="shareModalRef" :link="shareLink" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue'
 import { deletePicture } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
+import { Icon } from '@iconify/vue'
 
 interface Props {
   dataList?: API.PictureVO[]

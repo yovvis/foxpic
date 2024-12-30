@@ -8,8 +8,14 @@ $color: #bdfcc9;
 .ant-menu-sub {
   min-width: 96px !important;
 }
+// 侧边菜单位置调整
 .ant-layout-sider-zero-width-trigger {
   top: 100% !important;
   inset-inline-end: -20px !important;
   background-color: #4dd6af !important;
+}
+// 按钮图标垂直居中
+.ant-btn{
+  display: flex;
+  align-items: center;
 }

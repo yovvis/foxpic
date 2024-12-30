@@ -7,6 +7,12 @@
         <a-button type="primary" :href="`/add_picture?spaceId=${id}`" target="_blank">
           + 创建图片
         </a-button>
+        <a-button @click="doBatchEdit">
+          <template #icon>
+            <Icon icon="ant-design:edit-outlined" />
+          </template>
+          批量编辑
+        </a-button>
         <a-tooltip
           :title="`占用空间 ${formatSize(space.totalSize)} / ${formatSize(space.maxSize)}`"
         >
@@ -37,6 +43,12 @@
       @change="onPageChange"
     />
   </div>
+  <BatchEditPictureModal
+    ref="batchEditPictureModalRef"
+    :spaceId="id"
+    :pictureList="dataList"
+    :onSuccess="onBatchEditPictureSuccess"
+  />
 </template>
 
 <script setup lang="ts">
@@ -45,7 +57,10 @@ import { getSpaceVoById } from '@/api/spaceController.ts'
 import { message } from 'ant-design-vue'
 import { listPictureVoByPage, searchPictureByColor } from '@/api/pictureController.ts'
 import { formatSize } from '@/utils/fileUtil.ts'
+import { ColorPicker } from 'vue3-colorpicker'
+import 'vue3-colorpicker/style.css'
 import PictureList from '@/components/picture/PictureList.vue'
+import { Icon } from '@iconify/vue'
 
 interface Props {
   id: string | number

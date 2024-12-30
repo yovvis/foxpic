@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { listPictureTagCategory, listPictureVoByPage } from '@/api/pictureController.ts'
+import { listPictureTagCategory, listPictureVoByPageWithCache } from '@/api/pictureController.ts'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router' // 定义数据
 
@@ -101,7 +101,7 @@ const fetchData = async () => {
       params.tags.push(tagList.value[index])
     }
   })
-  const res = await listPictureVoByPage(params)
+  const res = await listPictureVoByPageWithCache(params)
   if (res.data.code === 0 && res.data.data) {
     dataList.value = res.data.data.records ?? []
     total.value = res.data.data.total ?? 0
