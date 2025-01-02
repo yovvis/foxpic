@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import com.ayfox.web.constant.CommonConstant;
 import com.ayfox.web.exception.BusinessException;
 import com.ayfox.web.exception.ErrorCode;
+import com.ayfox.web.manager.auth.StpKit;
 import com.ayfox.web.mapper.UserMapper;
 import com.ayfox.web.model.dto.user.UserQueryRequest;
 import com.ayfox.web.model.entity.User;
@@ -81,7 +82,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public LoginUserVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+    public LoginUserVO userLogin(String userAccount, String userPassword) {
         // 1. 校验
         if (StrUtil.hasBlank(userAccount, userPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
@@ -105,24 +106,25 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "用户不存在或密码错误");
         }
         // 3. 记录用户的登录态
-        request.getSession().setAttribute(USER_LOGIN_STATE, user);
+        StpKit.DEFAULT.login(user.getId());
+        StpKit.DEFAULT.getSession().set(USER_LOGIN_STATE, user);
         return this.getLoginUserVO(user);
     }
 
     /**
      * 获取当前登录用户
      *
-     * @param request
      * @return
      */
     @Override
-    public User getLoginUser(HttpServletRequest request) {
+    public User getLoginUser() {
         // 先判断是否已登录
-        Object userObj = request.getSession().getAttribute(USER_LOGIN_STATE);
-        User currentUser = (User) userObj;
-        if (currentUser == null || currentUser.getId() == null) {
+        boolean isLogin = StpKit.DEFAULT.isLogin();
+        if (!isLogin) {
             throw new BusinessException(ErrorCode.NOT_LOGIN_ERROR);
         }
+        Object userObj = StpKit.DEFAULT.getSession().get(USER_LOGIN_STATE);
+        User currentUser = (User) userObj;
         // 从数据库查询（追求性能的话可以注释，直接走缓存）
         long userId = currentUser.getId();
         currentUser = this.getById(userId);

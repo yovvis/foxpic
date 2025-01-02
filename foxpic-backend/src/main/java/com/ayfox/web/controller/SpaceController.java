@@ -50,7 +50,7 @@ public class SpaceController {
     @PostMapping("/add")
     public BaseResponse<Long> addSpace(@RequestBody SpaceAddRequest spaceAddRequest, HttpServletRequest request) {
         ThrowUtils.throwIf(spaceAddRequest == null, ErrorCode.PARAMS_ERROR);
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userService.getLoginUser();
         long newId = spaceService.addSpace(spaceAddRequest, loginUser);
         return ResultUtils.success(newId);
     }
@@ -69,7 +69,7 @@ public class SpaceController {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userService.getLoginUser();
         Long id = deleteRequest.getId();
         // 判断是否存在
         Space oldSpace = spaceService.getById(id);
@@ -196,7 +196,7 @@ public class SpaceController {
         space.setEditTime(new Date());
         // 数据校验
         spaceService.validSpace(space, false);
-        User loginUser = userService.getLoginUser(request);
+        User loginUser = userService.getLoginUser();
         // 判断是否存在
         long id = spaceEditRequest.getId();
         Space oldSpace = spaceService.getById(id);
