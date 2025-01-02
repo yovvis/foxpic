@@ -1,5 +1,4 @@
 // index.scss最先加载，然后是 Ant Design，最后是 variables.scss 作用于 scoped
-//@use 'reset';
 @use 'ant-design-vue/dist/reset.css';
 
 /*滚动条美化*/

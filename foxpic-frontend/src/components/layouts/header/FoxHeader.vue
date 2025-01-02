@@ -69,11 +69,6 @@ const doDropItemClick = async (key: string) => {
 </script>
 <style scoped lang="scss">
 #basic-header {
-  * {
-    font-family:
-      PingFang SC,
-      sans-serif;
-  }
 }
 
 .title-bar {

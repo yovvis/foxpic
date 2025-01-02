@@ -74,6 +74,7 @@ const handleConfirm = () => {
     const file = new File([blob], fileName, { type: blob.type })
     // 上传图片
     handleUpload({ file })
+    // todo 删除裁切前图片
   })
 }
 
