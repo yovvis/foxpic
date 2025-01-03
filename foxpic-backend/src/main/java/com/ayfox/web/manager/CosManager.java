@@ -71,7 +71,7 @@ public class CosManager {
         // 2.缩略图，仅对 >20KB的图片进行处理
         if (file.length() > 20 * 1024) {
             PicOperations.Rule thumbnailRule = new PicOperations.Rule();
-            String thumbnailKey = FileUtil.mainName(key) + "_thumbnail." + FileUtil.getSuffix(key);
+            String thumbnailKey = FileUtil.mainName(key) + "_thumbnail." + (StrUtil.isBlank(FileUtil.getSuffix(key)) ? "webp" : FileUtil.getSuffix(key));
             thumbnailRule.setFileId(thumbnailKey);
             thumbnailRule.setBucket(cosClientConfig.getBucket());
             thumbnailRule.setRule(String.format("imageMogr2/thumbnail/%sx%s>", 128, 128));

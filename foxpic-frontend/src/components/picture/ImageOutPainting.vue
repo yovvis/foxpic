@@ -70,7 +70,7 @@ const createTask = async () => {
   })
   if (res.data.code === 0 && res.data.data) {
     message.success('创建任务成功，请耐心等待，不要退出界面')
-    console.log(res.data.data.output.taskId)
+    console.log("Task Id:",res.data.data.output.taskId)
     taskId.value = res.data.data.output.taskId
     // 开启轮询
     startPolling()
@@ -80,7 +80,7 @@ const createTask = async () => {
 }
 
 // 轮询定时器
-let pollingTimer: NodeJS.Timeout = null
+let pollingTimer: Nodejs.Timeout = null
 
 // 开始轮询
 const startPolling = () => {
@@ -95,6 +95,7 @@ const startPolling = () => {
       })
       if (res.data.code === 0 && res.data.data) {
         const taskResult = res.data.data.output
+        console.log("taskResult", taskResult)
         if (taskResult.taskStatus === 'SUCCEEDED') {
           message.success('扩图任务执行成功')
           resultImageUrl.value = taskResult.outputImageUrl
